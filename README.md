@@ -5,7 +5,7 @@ Saab filme lisada lemmikutesse
 Saab peita filme
 Sisselogimine
 
-Abitsioonikad mõtted:
+Ambitsioonikad mõtted:
 Gruppid
 Leia lähim kino
 Filmikriitikute rating
