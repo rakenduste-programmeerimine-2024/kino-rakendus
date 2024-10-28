@@ -13,6 +13,7 @@ Filmikriitikute rating
 ### Authors:
 - Hugo Luca Tigane
 - Germo Tael
+- Jan-Erich Sigur
 
 ## Preview
 
