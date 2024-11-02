@@ -22,10 +22,10 @@ We noticed that there doesn't seem to be a place to check the current and future
 
 ### Development Phase
 - **Backend Development**
-    - [ ] Set up the API structure
     - [ ] Implement authentication endpoints
     - [ ] Implement movie data endpoints
     - [ ] Integrate with the external movie data API
+  
 - **Frontend Development**
   - [ ] Authentication UI
   - [ ] Browsing UI
@@ -35,6 +35,7 @@ We noticed that there doesn't seem to be a place to check the current and future
   - [ ] Profile view UI
     - [ ] Watchlists
     - [ ] Favourites
+  
 - **Integration**
   - [ ] Integrate backend services with the frontend
 
@@ -140,6 +141,9 @@ _Will be added soon._
 
 - **Country wide cinemas**
   - The website will show information about all of the cinemas in Estonia.
+
+- **Settings**
+  - The user can choose between light and dark modes.
 
 ### Authors:
 
