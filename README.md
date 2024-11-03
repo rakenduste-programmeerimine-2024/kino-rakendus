@@ -50,12 +50,15 @@ We noticed that there doesn't seem to be a place to check the current and future
 
 **17.11**
    - Luua kinode ja filmide api funktsionaalsus.
+
 **24.11**
    - Luua funktsioonid haldamiseks
+
 **01.12**
    - Lisada viis kuidas kasutajad saavad hinnata filme ja kinosid.
+
 **08.12**
-   - Läbi viia testimine, parandada bugid ja optimeerida jõudlust,  -  
+   - Läbi viia testimine, parandada bugid ja optimeerida jõudlust. 
 ## Used technologies
 
 - **Vercel** - For deploying the solution.
