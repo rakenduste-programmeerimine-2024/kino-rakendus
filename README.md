@@ -165,4 +165,4 @@ _Will be added soon._
 - Hugo Luca Tigane
 - Germo Tael
 - Jan-Erich Sigur
-- Madis
+- Madis Valliste
