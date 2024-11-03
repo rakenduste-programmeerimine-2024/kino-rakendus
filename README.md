@@ -47,6 +47,7 @@ We noticed that there doesn't seem to be a place to check the current and future
 ## Milestones
 **10.11**
    - Luua või leida erinevate kinode apid.
+
 **17.11**
    - Luua kinode ja filmide api funktsionaalsus.
 **24.11**
