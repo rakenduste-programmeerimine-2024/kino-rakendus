@@ -46,16 +46,27 @@ We noticed that there doesn't seem to be a place to check the current and future
 
 ## Milestones
 **10.11**
-   - 
+   - Luua või leida erinevate kinode apid.
+   - Luua rakenduse arhitektuuriplaan.
+   - Alustada projektikeskkonna seadistamisega.
+   - Alustada projekti raamistiku ehitamisega.
 **17.11**
-   - 
+   - Luua kinode ja filmide api funktsionaalsus.
+   - Arendada esmane andmebaasimudel.
+   - Testida ja valideerida, et kasutajad saavad edukalt filme näha.
 **24.11**
-   - 
+   - Luua funktsioonid haldamiseks
+   - Arendada seansside haldamise moodul
+   - Luua administraatori paneel filmide ja seansside haldamiseks.
+   - Alustada UI disainiga filmide ja seansside kuvamiseks kasutajatele.
 **01.12**
-   - 
+   - Lisada viis kuidas kasutajad saavad hinnata filme ja kinosid.
+   - Lisa kasutajate autentimise ja sisselogimise süsteem.
+   - Üldine UI testimine ja parandamine.
 **08.12**
-   - 
-
+   - Läbi viia testimine, parandada bugid ja optimeerida jõudlust,  -  - Valmistada ette dokumentatsioon ja kasutusjuhendid.
+   - Teha lõplik esitlus ja arutelu tulevaste parenduste osas.
+   - Viimistleda kasutajaliides ja parandada UX
 ## Used technologies
 
 - **Vercel** - For deploying the solution.
@@ -150,3 +161,4 @@ _Will be added soon._
 - Hugo Luca Tigane
 - Germo Tael
 - Jan-Erich Sigur
+- Madis Valliste
