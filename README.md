@@ -47,7 +47,7 @@ We noticed that there doesn't seem to be a place to check the current and future
 ## Milestones
 **10.11**
    - Luua või leida erinevate kinode apid.
-   -Alustada projektikeskkonna seadistamisega.
+   - Alustada projektikeskkonna seadistamisega.
    - Alustada projekti raamistiku ehitamisega.
 
 **17.11**
