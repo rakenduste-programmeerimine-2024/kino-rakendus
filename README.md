@@ -65,7 +65,7 @@ We noticed that there doesn't seem to be a place to check the current and future
 - **[API Name Placeholder]** - To fetch the movie data.
 
 ## Lo-Fi Wireframe
-_Will be added soon._
+https://www.figma.com/proto/OaE0ghmrBOAORJgd5CmRLu/Untitled?node-id=1-14&node-type=canvas&t=eN9gXaLY2P98KzUb-8&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A14&hide-ui=1
 
 ## Preview
 _Will be added soon._
