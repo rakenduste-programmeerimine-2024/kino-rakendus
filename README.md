@@ -80,7 +80,7 @@ We noticed that there doesn't seem to be a place to check the current and future
 - **[API Name Placeholder]** - To fetch the movie data.
 
 ## Lo-Fi Wireframe
-_Will be added soon._
+![Wireframe](./Wireframe.png)
 
 ## Preview
 _Will be added soon._
