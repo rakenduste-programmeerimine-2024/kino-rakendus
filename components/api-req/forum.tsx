@@ -1,91 +1,12 @@
-import { parseStringPromise } from "xml2js";
-
-interface Show {
-  ID: number;
-  AvailableSeats: number | null;
-  TotalSeats: number | null;
-  dtAccounting: string;
-  dttmShowStart: string;
-  dttmShowStartUTC: string;
-  dttmShowEnd: string;
-  dttmShowEndUTC: string;
-  ShowSalesStartTime: string;
-  ShowSalesStartTimeUTC: string;
-  ShowSalesEndTime: string;
-  ShowSalesEndTimeUTC: string;
-  ShowReservationStartTime: string;
-  ShowReservationStartTimeUTC: string;
-  ShowReservationEndTime: string;
-  ShowReservationEndTimeUTC: string;
-  EventID: number;
-  Title: string;
-  OriginalTitle: string;
-  ProductionYear: number;
-  LengthInMinutes: number;
-  dtLocalRelease: string;
-  Rating: string;
-  RatingLabel: string;
-  RatingImageUrl: string;
-  EventType: string;
-  Genres: string;
-  TheatreID: number;
-  TheatreAuditriumID: number;
-  Theatre: string;
-  TheatreAuditorium: string;
-  TheatreAndAuditorium: string;
-  PresentationMethod: string;
-  EventSeries: string;
-  ShowURL: string;
-  EventURL: string;
-  SpokenLanguage: {
-    Name: string;
-    NameInLanguage: string;
-    ISOTwoLetterCode: string;
-  };
-  Images: {
-    EventMediumImagePortrait: string | null;
-  };
-  ContentDescriptors: any[];
-}
-
-interface Show {
-  Show: Show[];
-}
-
-interface ScheduleData {
-  PubDate: string;
-  Shows: Show;
-}
-
-interface FullData {
-  Schedule: ScheduleData;
-}
+import { getForumSchedule } from "@/lib/movie-data/cinemas/forum";
 
 export default async function Forum() {
-  const url = "https://www.forumcinemas.ee/xml/Schedule";
-
   try {
-    const response = await fetch(url, { cache: "no-store" });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.statusText}`);
-    }
-
-    //const jsonData: ScheduleData = await response.json();
-
-    const xmlData: any = await response.text();
-    //console.log(xmlData);
-    const jsonData: FullData = await parseStringPromise(xmlData);
-    /*console.log(jsonData);
-    console.log(jsonData.Schedule);
-    console.log(jsonData.Schedule.Shows);
-    console.log(jsonData.Schedule.Shows[0]);
-    console.log(jsonData.Schedule.Shows[0].Show);*/
-
+    const data = await getForumSchedule()
     return (
       <div>
         <h1>Schedule</h1>
-        {jsonData.Schedule.Shows[0].Show.map((show, index) => (
+        {data.Schedule.Shows.Show.map((show, index) => (
           <div key={index}>
             <h2>{show.Title}</h2>
             <p>
