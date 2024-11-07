@@ -8,6 +8,11 @@ import { redirect } from "next/navigation";
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
+  const birthDateStr = formData.get("date-input")?.toString();
+  const username = formData.get("username")?.toString();
+  const firstName = formData.get("first-name")?.toString();
+  const lastName = formData.get("last-name")?.toString();
+
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
@@ -15,23 +20,62 @@ export const signUpAction = async (formData: FormData) => {
     return { error: "Email and password are required" };
   }
 
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${origin}/auth/callback`,
-    },
-  });
+  if (!username) {
+    return { error: "Username is required" };
+  }
 
-  if (error) {
+  if (!birthDateStr) {
+    return { error: "Date of birth is required" };
+  }
+
+  if (!firstName || !lastName) {
+    return { error: "Please enter your first and last name" };
+  }
+
+  const birthDate = new Date(birthDateStr);
+
+  try {
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${origin}/auth/callback`,
+      },
+    });
+
+    if (signUpError) {
+      console.error(signUpError);
+      return { error: "Something went wrong while signing up, please try again." };
+    }
+
+    if (data.user) {
+      // connects the supabase auth user with user_data table.
+      const { error: insertError } = await supabase.from("user_data").insert([
+        {
+          auth_uuid: data.user.id,
+          username,
+          first_name: firstName,
+          last_name: lastName,
+          birth_date: birthDate,
+        },
+      ]);
+
+      if (insertError) {
+        console.error(insertError);
+        return { error: "Something went wrong while signing up, please try again." };
+      }
+
+      return encodedRedirect(
+        "success",
+        "/sign-up",
+        "Thanks for signing up! Please check your email for a verification link.",
+      );
+    } else {
+      throw new Error("Something went wrong. Please try again.");
+    }
+  } catch (error: any) {
     console.error(error.code + " " + error.message);
     return encodedRedirect("error", "/sign-up", error.message);
-  } else {
-    return encodedRedirect(
-      "success",
-      "/sign-up",
-      "Thanks for signing up! Please check your email for a verification link.",
-    );
   }
 };
 
