@@ -5,3 +5,8 @@ export interface ICinemaState {
   showThule: boolean;
   showViimsi: boolean;
 }
+
+export interface IMembership {
+  selectedMemberships: string[];
+  setSelectedMemberships: React.Dispatch<React.SetStateAction<string[]>>;
+}

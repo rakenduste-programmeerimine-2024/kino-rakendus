@@ -7,7 +7,7 @@ import {
   DropdownMenuCheckboxItem,
 } from "../ui/dropdown-menu";
 import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
-import { ICinemaState } from "./membership.types";
+import { ICinemaState, IMembership } from "./membership.types";
 
 const cinemas = [
   { name: "Forum", stateKey: "showForum" },
@@ -17,8 +17,10 @@ const cinemas = [
   { name: "Viimsi", stateKey: "showViimsi" },
 ];
 
-export default function MembershipDropdown() {
-  const [selectedMemberships, setSelectedMemberships] = useState<string[]>([]);
+export default function MembershipDropdown({
+  selectedMemberships,
+  setSelectedMemberships,
+}: IMembership) {
   const [cinemaState, setCinemaState] = useState<ICinemaState>({
     showForum: false,
     showApollo: false,
@@ -58,23 +60,23 @@ export default function MembershipDropdown() {
 
   return (
     <>
-        <DropdownMenu>
-          <DropdownMenuLabel>Memberships</DropdownMenuLabel>
-          <DropdownMenuTrigger>{buttonText}</DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {cinemas.map((cinema) => (
-              <DropdownMenuCheckboxItem
-                key={cinema.name}
-                id={cinema.name}
-                checked={cinemaState[cinema.stateKey as keyof ICinemaState]}
-                onCheckedChange={(checked) => {
-                  handleCinemaStateChange(cinema.stateKey, checked);
-                }}>
-                {cinema.name}
-              </DropdownMenuCheckboxItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <DropdownMenu>
+        <DropdownMenuLabel>Memberships</DropdownMenuLabel>
+        <DropdownMenuTrigger>{buttonText}</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {cinemas.map((cinema) => (
+            <DropdownMenuCheckboxItem
+              key={cinema.name}
+              id={cinema.name}
+              checked={cinemaState[cinema.stateKey as keyof ICinemaState]}
+              onCheckedChange={(checked) => {
+                handleCinemaStateChange(cinema.stateKey, checked);
+              }}>
+              {cinema.name}
+            </DropdownMenuCheckboxItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </>
   );
 }
