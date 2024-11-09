@@ -118,9 +118,17 @@ export enum Name {
 }
 
 export enum Theatre {
+  ApolloKinoSolaris = "Apollo Kino Solaris",
+  ApolloKinoMustamäe = "Apollo Kino Mustamäe",
+  ApolloKinoÜlemiste = "Apollo Kino Ülemiste",
   ApolloKinoCocaColaPlaza = "Apollo Kino Coca-Cola Plaza",
   ApolloKinoKristiine = "Apollo Kino Kristiine",
-  ApolloKinoMustamäe = "Apollo Kino Mustamäe",
-  ApolloKinoSolaris = "Apollo Kino Solaris",
-  ApolloKinoÜlemiste = "Apollo Kino Ülemiste",
+  ApolloKinoLõunakeskus = "Apollo Kino Lõunakeskus",
+  ApolloKinoEeden = "Apollo Kino Eeden",
+  ApolloKinoTasku = "Apollo Kino Tasku",
+  ApolloKinoPärnu = "Apollo Kino Pärnu",
+  ApolloKinoSaaremaa = "Apollo Kino Saaremaa",
+  ApolloKinoAstri = "Apollo Kino Astri",
+  ApolloKinoJõhvi = "Apollo Kino Jõhvi"
 }
+
