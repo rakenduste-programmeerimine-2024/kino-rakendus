@@ -49,7 +49,7 @@ export const signUpAction = async (formData: FormData) => {
     }
 
     if (data.user) {
-      // connects the supabase auth user with user_data table.
+      // Connects the supabase auth user with user_data table.
       const { error: insertError } = await supabase.from("user_data").insert([
         {
           auth_uuid: data.user.id,
