@@ -63,7 +63,7 @@ export default function SignUpForm() {
             selectedMemberships={selectedMemberships}
             setSelectedMemberships={setSelectedMemberships}
           />
-          <SubmitButton formAction={() => {signUpAction; }} pendingText="Signing up...">
+          <SubmitButton formAction={signUpAction} pendingText="Signing up...">
             Sign up
           </SubmitButton>
         </div>
