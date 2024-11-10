@@ -1,8 +1,8 @@
-import { getArtisSchedule } from "@/lib/movie-data/cinemas/artis";
+import { getApolloSchedule } from "@/lib/movie-data/cinemas/apollo";
 
-export default async function Artis() {
+export default async function ApolloKino() {
   try {
-    const data = await getArtisSchedule()
+    const data = await getApolloSchedule();
 
     return (
       <div>

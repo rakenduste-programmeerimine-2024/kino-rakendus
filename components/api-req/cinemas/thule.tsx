@@ -1,8 +1,8 @@
-import { getForumSchedule } from "@/lib/movie-data/cinemas/forum";
+import { getThuleSchedule } from "@/lib/movie-data/cinemas/thule";
 
-export default async function Forum() {
+export default async function Thule() {
   try {
-    const data = await getForumSchedule()
+    const data = await getThuleSchedule();
     return (
       <div>
         <h1>Schedule</h1>

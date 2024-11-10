@@ -1,7 +1,8 @@
-import { getViimsiSchedule } from "@/lib/movie-data/cinemas/viimsi";
-export default async function Viimsi() {
+import { getForumSchedule } from "@/lib/movie-data/cinemas/forum";
+
+export default async function Forum() {
   try {
-    const data = await getViimsiSchedule()
+    const data = await getForumSchedule();
     return (
       <div>
         <h1>Schedule</h1>

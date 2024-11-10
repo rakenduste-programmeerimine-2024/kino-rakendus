@@ -1,8 +1,8 @@
-import { getThuleSchedule } from "@/lib/movie-data/cinemas/thule";
+import { getViljandiSchedule } from "@/lib/movie-data/cities/viljandi";
 
-export default async function Thule() {
+export default async function Viljandi() {
   try {
-    const data = await getThuleSchedule()
+    const data = await getViljandiSchedule();
     return (
       <div>
         <h1>Schedule</h1>

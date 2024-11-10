@@ -1,12 +1,20 @@
-import ApolloKino from "@/components/api-req/apollokino";
-import Artis from "@/components/api-req/artis";
-import Forum from "@/components/api-req/forum";
-import Thule from "@/components/api-req/thule";
-import Viimsi from "@/components/api-req/viimsi";
+import ApolloKino from "@/components/api-req/cinemas/apollokino";
+import Artis from "@/components/api-req/cinemas/artis";
+import Forum from "@/components/api-req/cinemas/forum";
+import Thule from "@/components/api-req/cinemas/thule";
+import Viimsi from "@/components/api-req/cinemas/viimsi";
+import Link from "next/link";
 
 export default async function Index() {
   return (
     <>
+      <Link href="/tallinn">Tallinn</Link>
+      <Link href="/saaremaa">Saaremaa</Link>
+      <Link href="/tartu">Tartu</Link>
+      <Link href="/parnu">Pärnu</Link>
+      <Link href="/narva">Narva</Link>
+      <Link href="/johvi">Jõhvi</Link>
+      <Link href="/viljandi">Viljandi</Link>
       <main className="flex-1 flex flex-col gap-6 px-4">
         <h1 className="bold text-pink-500">Apollokino</h1>
         <ApolloKino />

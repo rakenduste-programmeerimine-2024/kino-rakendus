@@ -1,8 +1,8 @@
-import { getApolloSchedule } from "@/lib/movie-data/cinemas/apollo";
+import { getNarvaSchedule } from "@/lib/movie-data/cities/narva";
 
-export default async function ApolloKino() {
+export default async function Narva() {
   try {
-    const data = await getApolloSchedule()
+    const data = await getNarvaSchedule();
 
     return (
       <div>
