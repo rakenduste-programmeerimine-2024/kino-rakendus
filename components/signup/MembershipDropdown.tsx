@@ -7,14 +7,16 @@ import {
   DropdownMenuCheckboxItem,
 } from "../ui/dropdown-menu";
 import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
-import { ICinemaState, IMembership } from "./membership.types";
+import { ICinemaState, IMembership, IMembershipTier } from "./membership.types";
+
+import MembershipTiersDropdown from "./MembershipTiersDropdown";
 
 const cinemas = [
-  { name: "Forum", stateKey: "showForum" },
-  { name: "Apollo", stateKey: "showApollo" },
-  { name: "Artis", stateKey: "showArtis" },
-  { name: "Thule", stateKey: "showThule" },
-  { name: "Viimsi", stateKey: "showViimsi" },
+  { name: "Forum", stateKey: "showForum", cinemaID: 1 },
+  { name: "Apollo", stateKey: "showApollo", cinemaID: 2 },
+  { name: "Artis", stateKey: "showArtis", cinemaID: 4 },
+  { name: "Thule", stateKey: "showThule", cinemaID: 3 },
+  { name: "Viimsi", stateKey: "showViimsi", cinemaID: 5 },
 ];
 
 export default function MembershipDropdown({
@@ -29,6 +31,10 @@ export default function MembershipDropdown({
     showViimsi: false,
   });
 
+  const [selectedMembershipTier, setSelectedMembershipTier] = useState<
+    IMembershipTier[]
+  >([]);
+
   const handleCheckedChange = (cinemaName: string, isChecked: boolean) => {
     const tempMemberships = [...selectedMemberships];
 
@@ -40,16 +46,22 @@ export default function MembershipDropdown({
     console.log("", tempMemberships);
   };
 
-  const handleCinemaStateChange = (cinemaKey: string, checked: boolean) => {
+  const handleCinemaStateChange = (
+    cinemaKey: string,
+    checked: boolean,
+    cinemaID: number,
+  ) => {
     const tempState = { ...cinemaState };
     tempState[cinemaKey as keyof ICinemaState] = checked;
     const cinema = cinemas.find((cinema) => cinema.stateKey === cinemaKey);
     setCinemaState(tempState);
+
     if (cinema) {
       handleCheckedChange(cinema.name, checked);
     }
   };
 
+  
   const buttonText =
     selectedMemberships.length > 0
       ? selectedMemberships.join(", ")
@@ -70,13 +82,21 @@ export default function MembershipDropdown({
               id={cinema.name}
               checked={cinemaState[cinema.stateKey as keyof ICinemaState]}
               onCheckedChange={(checked) => {
-                handleCinemaStateChange(cinema.stateKey, checked);
+                handleCinemaStateChange(
+                  cinema.stateKey,
+                  checked,
+                  cinema.cinemaID,
+                );
               }}>
               {cinema.name}
             </DropdownMenuCheckboxItem>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
+      <MembershipTiersDropdown
+        selectedMembershipTier={selectedMembershipTier}
+        setSelectedMembershipTier={setSelectedMembershipTier}
+      />
     </>
   );
 }
