@@ -7,4 +7,6 @@ export interface ICinemaState {
 export interface IMembershipTier {
   id: number;
   title: string;
+  cinema_id: number;
+  discount_type: string;
 }

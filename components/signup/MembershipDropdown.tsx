@@ -7,7 +7,7 @@ import {
   DropdownMenuCheckboxItem,
 } from "../ui/dropdown-menu";
 import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
-import { ICinemaState } from "./membership.types";
+import { ICinemaState, IMembershipTier } from "./membership.types";
 
 import MembershipTiersDropdown from "./MembershipTiersDropdown";
 import { CinemaContext } from "./SignUpForm";
@@ -15,6 +15,7 @@ import { CinemaContext } from "./SignUpForm";
 export default function MembershipDropdown() {
   const [isVisible, setIsVisible] = useState(false); // Hides the membership tiers
   const [cinemaState, setCinemaState] = useState<ICinemaState[]>([]); // Cinemas that have been selected
+  const [membershipState, setMembershipState] = useState<IMembershipTier[]>([]); // For child component.
   const cinemas = useContext(CinemaContext); // All cinemas from database
 
   // This function saves the selected cinema id's
@@ -39,9 +40,6 @@ export default function MembershipDropdown() {
         setIsVisible(false);
       }
     }
-
-    console.log("Selected cinemas:");
-    console.dir(cinemaState);
   };
 
   const buttonText =
@@ -53,8 +51,6 @@ export default function MembershipDropdown() {
           )
           .join(", ")
       : "Select your membership(s)";
-
-  // TODO: add membership tiers.
   // TODO: add memberships to database.
 
   return (
@@ -79,7 +75,11 @@ export default function MembershipDropdown() {
         </DropdownMenuContent>
       </DropdownMenu>
       <div style={{ visibility: isVisible ? "visible" : "hidden" }}>
-        <MembershipTiersDropdown />
+        <MembershipTiersDropdown
+          selectedCinemas={cinemaState}
+          membershipState={membershipState}
+          setMembershipState={setMembershipState}
+        />
       </div>
     </>
   );
