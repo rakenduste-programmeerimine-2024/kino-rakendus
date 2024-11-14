@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   DropdownMenuContent,
   DropdownMenuTrigger,
@@ -7,64 +7,51 @@ import {
   DropdownMenuCheckboxItem,
 } from "../ui/dropdown-menu";
 import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
-import { ICinemaState, IMembership, IMembershipTier } from "./membership.types";
+import { ICinemaState } from "./membership.types";
 
 import MembershipTiersDropdown from "./MembershipTiersDropdown";
+import { CinemaContext } from "./SignUpForm";
 
-const cinemas = [
-  { name: "Forum", stateKey: "showForum", cinemaID: 1 },
-  { name: "Apollo", stateKey: "showApollo", cinemaID: 2 },
-  { name: "Artis", stateKey: "showArtis", cinemaID: 4 },
-  { name: "Thule", stateKey: "showThule", cinemaID: 3 },
-  { name: "Viimsi", stateKey: "showViimsi", cinemaID: 5 },
-];
+export default function MembershipDropdown() {
+  const [isVisible, setIsVisible] = useState(false); // Hides the membership tiers
+  const [cinemaState, setCinemaState] = useState<ICinemaState[]>([]); // Cinemas that have been selected
+  const cinemas = useContext(CinemaContext); // All cinemas from database
 
-export default function MembershipDropdown({
-  selectedMemberships,
-  setSelectedMemberships,
-}: IMembership) {
-  const [cinemaState, setCinemaState] = useState<ICinemaState>({
-    showForum: false,
-    showApollo: false,
-    showArtis: false,
-    showThule: false,
-    showViimsi: false,
-  });
+  // This function saves the selected cinema id's
+  const handleCheckedChange = (cinemaId: number, checked: boolean) => {
+    if (checked) {
+      const selectedCinemas = cinemas.find((cinema) => cinema.id === cinemaId);
+      if (selectedCinemas) {
+        setCinemaState((prevState) => [
+          ...prevState,
+          { ...selectedCinemas, isChecked: true },
+        ]);
+        if (selectedCinemas.name !== "Thule") {
+          setIsVisible(true);
+        }
+      }
+    } else {
+      setCinemaState((prevState) =>
+        prevState.filter((cinema) => cinema.id !== cinemaId),
+      );
 
-  const [selectedMembershipTier, setSelectedMembershipTier] = useState<
-    IMembershipTier[]
-  >([]);
-
-  const handleCheckedChange = (cinemaName: string, isChecked: boolean) => {
-    const tempMemberships = [...selectedMemberships];
-
-    isChecked
-      ? tempMemberships.push(cinemaName)
-      : tempMemberships.splice(selectedMemberships.indexOf(cinemaName), 1);
-
-    setSelectedMemberships(tempMemberships);
-    console.log("", tempMemberships);
-  };
-
-  const handleCinemaStateChange = (
-    cinemaKey: string,
-    checked: boolean,
-    cinemaID: number,
-  ) => {
-    const tempState = { ...cinemaState };
-    tempState[cinemaKey as keyof ICinemaState] = checked;
-    const cinema = cinemas.find((cinema) => cinema.stateKey === cinemaKey);
-    setCinemaState(tempState);
-
-    if (cinema) {
-      handleCheckedChange(cinema.name, checked);
+      if (cinemaState.length < 2) {
+        setIsVisible(false);
+      }
     }
+
+    console.log("Selected cinemas:");
+    console.dir(cinemaState);
   };
 
-  
   const buttonText =
-    selectedMemberships.length > 0
-      ? selectedMemberships.join(", ")
+    cinemaState.length > 0
+      ? cinemaState
+          .map(
+            (cinema) =>
+              cinemas.find((cinemaItem) => cinemaItem.id === cinema.id)?.name,
+          )
+          .join(", ")
       : "Select your membership(s)";
 
   // TODO: add membership tiers.
@@ -78,25 +65,22 @@ export default function MembershipDropdown({
         <DropdownMenuContent>
           {cinemas.map((cinema) => (
             <DropdownMenuCheckboxItem
-              key={cinema.name}
-              id={cinema.name}
-              checked={cinemaState[cinema.stateKey as keyof ICinemaState]}
+              key={cinema.id}
+              id={cinema.id.toString()}
+              checked={cinemaState.some(
+                (cinemaStateC) => cinemaStateC.id === cinema.id,
+              )}
               onCheckedChange={(checked) => {
-                handleCinemaStateChange(
-                  cinema.stateKey,
-                  checked,
-                  cinema.cinemaID,
-                );
+                handleCheckedChange(cinema.id, checked);
               }}>
               {cinema.name}
             </DropdownMenuCheckboxItem>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <MembershipTiersDropdown
-        selectedMembershipTier={selectedMembershipTier}
-        setSelectedMembershipTier={setSelectedMembershipTier}
-      />
+      <div style={{ visibility: isVisible ? "visible" : "hidden" }}>
+        <MembershipTiersDropdown />
+      </div>
     </>
   );
 }

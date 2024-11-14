@@ -1,12 +1,7 @@
-import { signUpAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
-import MembershipDropdown from "@/components/signup/MembershipDropdown";
 import SignUpForm from "@/components/signup/SignUpForm";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function Signup(props: {
   searchParams: Promise<Message>;
@@ -20,9 +15,43 @@ export default async function Signup(props: {
     );
   }
 
+  let res;
+  // Get the cinemas and memberships at the top of the component tree.
+  try {
+    const supabase = await createClient();
+    const { data: memberships, error: membershipFetchError } = await supabase
+      .from("membership")
+      .select("*");
+
+    if (membershipFetchError) {
+      console.error("Error fetching memberships:", membershipFetchError);
+      return [{ id: 10000000000, name: "Unexpected Errorino" }];
+    }
+
+    const { data: cinemasFromDb, error: cinemaFetchError } = await supabase
+      .from("cinema")
+      .select("*");
+
+    if (cinemaFetchError) {
+      console.error("Error fetching memberships:", cinemaFetchError);
+      return [{ id: 10000000000, name: "Unexpected Errorino" }];
+    }
+
+    // Add the isChecked property to each cinema, for easier handling
+    const cinemas = cinemasFromDb.map((cinema) => ({
+      ...cinema,
+      isChecked: false,
+    }));
+
+    res = { cinemas, memberships };
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return [];
+  }
+
   return (
     <>
-      <SignUpForm />
+      <SignUpForm cinemas={res.cinemas} memberships={res.memberships} />
       <FormMessage message={searchParams} />
       <SmtpMessage />
     </>

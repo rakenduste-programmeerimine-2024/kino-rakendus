@@ -5,10 +5,19 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signUpAction } from "@/app/actions";
 import MembershipDropdown from "@/components/signup/MembershipDropdown";
-import { useState } from "react";
+import { createContext } from "react";
+import { ICinemaState, IMembershipTier } from "./membership.types";
 
-export default function SignUpForm() {
-  const [selectedMemberships, setSelectedMemberships] = useState<string[]>([]);
+export const CinemaContext = createContext<ICinemaState[]>([]);
+export const MembershipContext = createContext<IMembershipTier[]>([]);
+
+export default function SignUpForm({
+  cinemas,
+  memberships,
+}: {
+  cinemas: ICinemaState[];
+  memberships: IMembershipTier[];
+}) {
   return (
     <>
       <form className="flex flex-col min-w-64 max-w-64 mx-auto">
@@ -59,10 +68,11 @@ export default function SignUpForm() {
           />
           <Label htmlFor="date-input">Date-of-birth</Label>
           <Input name="date-input" id="date-input" type="date" required />
-          <MembershipDropdown
-            selectedMemberships={selectedMemberships}
-            setSelectedMemberships={setSelectedMemberships}
-          />
+          <CinemaContext.Provider value={cinemas}>
+            <MembershipContext.Provider value={memberships}>
+              <MembershipDropdown />
+            </MembershipContext.Provider>
+          </CinemaContext.Provider>
           <SubmitButton formAction={signUpAction} pendingText="Signing up...">
             Sign up
           </SubmitButton>
