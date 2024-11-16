@@ -51,6 +51,13 @@ export interface Video {
     MediaResourceFormat: string;
 }
 
+export interface EventsData {
+    "?xml": string;
+    Events: {
+      Event: Event[];
+    };
+  }
+
 export interface Event {
     ID: number;
     Title: string;
@@ -73,5 +80,6 @@ export interface Event {
     Videos: Video[];
     Cast: CastMember[];
     Directors: Director[];
-    Pictures: Picture[]
+    Pictures: Picture[];
+    Events: Event[];
 }

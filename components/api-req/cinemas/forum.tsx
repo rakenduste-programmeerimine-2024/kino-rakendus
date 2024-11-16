@@ -1,30 +1,30 @@
-import { getForumSchedule } from "@/lib/movie-data/cinemas/forum";
+import { getForumEvents } from "@/lib/event-data/cinemas/forum-events";
 
 export default async function Forum() {
   try {
-    const data = await getForumSchedule();
+    const data = await getForumEvents();
     return (
       <div>
         <h1>Schedule</h1>
-        {data.Schedule.Shows.Show.map((show, index) => (
+        {data.Events.Event.map((event, index) => (
           <div key={index}>
-            <h2>{show.Title}</h2>
+            <h2>{event.Title}</h2>
             <p>
-              <strong>Original Title:</strong> {show.OriginalTitle}
+              <strong>Original Title:</strong> {event.OriginalTitle}
             </p>
             <p>
-              <strong>Show Time:</strong> {show.dttmShowStart}
+              <strong>Movie Rating:</strong> {event.Rating}
             </p>
             <p>
-              <strong>Location:</strong> {show.TheatreAndAuditorium}
+              <strong>Short description:</strong> {event.ShortSynopsis}
             </p>
             <p>
-              <strong>Genres:</strong> {show.Genres}
+              <strong>Genres:</strong> {event.Genres}
             </p>
-            {show.Images.EventMediumImagePortrait && (
+            {event.Images.EventMediumImagePortrait && (
               <img
-                src={show.Images.EventMediumImagePortrait}
-                alt={show.Title}
+                src={event.Images.EventMediumImagePortrait}
+                alt={event.Title}
                 width="100"
               />
             )}
