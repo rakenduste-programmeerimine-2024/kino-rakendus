@@ -2,10 +2,8 @@ import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
 
 export default async function () {
   try {
-    const data = await getTallinnSchedule();
-    const dataApollo = await data[0];
-    const dataArtis = await data[1];
-    const dataViimsi = await data[2];
+    const [dataApollo, dataArtis, dataViimsi] =
+      await Promise.all(getTallinnSchedule());
     return (
       <div>
         <h1>Schedule</h1>
