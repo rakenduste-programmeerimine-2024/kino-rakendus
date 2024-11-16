@@ -1,4 +1,5 @@
 import { getNarvaSchedule } from "@/lib/movie-data/cities/narva";
+import Link from "next/link";
 
 export default async function Narva() {
   try {
@@ -9,7 +10,12 @@ export default async function Narva() {
         <h1>Schedule</h1>
         {data.Shows.map((show, index) => (
           <div key={index}>
-            <h2>{show.Title}</h2>
+            {/*<h2>{show.Title}</h2>*/}
+            <Link
+              href={`/narva/${show.Title.replace(/[\s:]+/g, "").toLowerCase()}`}
+            >
+              {show.Title}
+            </Link>
             <p>
               <strong>Original Title:</strong> {show.OriginalTitle}
             </p>
