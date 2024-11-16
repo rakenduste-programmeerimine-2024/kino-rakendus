@@ -1,6 +1,6 @@
 import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
 
-export default async function Tallinn() {
+export default async function () {
   try {
     const data = await getTallinnSchedule();
     const dataApollo = await data[0];
