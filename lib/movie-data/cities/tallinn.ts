@@ -11,6 +11,10 @@ const urlArtis = "https://www.kino.ee/xml/Schedule?nrOfDays=14"
 const urlViimsi = "https://www.viimsikino.ee/xml/Schedule?nrOfDays=14"
 
 
-export function getTallinnSchedule() {
+export function getTallinnSchedule(): [
+    Promise<ApolloJSON>,
+    Promise<ArtisJSON>,
+    Promise<ViimsiXML>
+  ] {
   return [JSONFromURL<ApolloJSON>(urlApollo), JSONFromURL<ArtisJSON>(urlArtis), XML2JSONFromURL<ViimsiXML>(urlViimsi)]
 }

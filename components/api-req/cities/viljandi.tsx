@@ -1,4 +1,5 @@
 import { getViljandiSchedule } from "@/lib/movie-data/cities/viljandi";
+import Link from "next/link";
 
 export default async function Viljandi() {
   try {
@@ -8,7 +9,12 @@ export default async function Viljandi() {
         <h1>Schedule</h1>
         {data.Schedule.Shows.Show.map((show, index) => (
           <div key={index}>
-            <h2>{show.Title}</h2>
+            {/*<h2>{show.Title}</h2>*/}
+            <Link
+              href={`/viljandi/${show.Title.replace(/[\s:]+/g, "").toLowerCase()}`}
+            >
+              {show.Title}
+            </Link>
             <p>
               <strong>Original Title:</strong> {show.OriginalTitle}
             </p>

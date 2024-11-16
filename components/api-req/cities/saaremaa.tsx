@@ -2,9 +2,7 @@ import { getSaaremaaSchedule } from "@/lib/movie-data/cities/saaremaa";
 
 export default async function Saaremaa() {
   try {
-    const data = await getSaaremaaSchedule();
-    const dataThule = await data[0];
-    const dataApollo = await data[1];
+    const [dataThule, dataApollo] = await Promise.all(getSaaremaaSchedule());
     return (
       <div>
         <h1>Schedule</h1>
