@@ -8,3 +8,7 @@ const url = "https://www.kino.ee/xml/Schedule"
 export function getArtisSchedule() {
   return JSONFromURL<ArtisJSON>(url)
 }
+
+export function getArtisEventSchedule(params: string) {
+  return JSONFromURL<ArtisJSON>(url + params)
+}

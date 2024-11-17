@@ -11,7 +11,7 @@ export default async function Viljandi() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/viljandi/${show.Title.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/tartu/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>

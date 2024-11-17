@@ -1,4 +1,4 @@
-import ApolloMovie from "@/components/movie/apollo";
+import OthersMovie from "@/components/movie/others";
 import ViljandiMovie from "@/components/movie/viljandi";
 
 export default async function Index({
@@ -7,7 +7,6 @@ export default async function Index({
   params: { city: string; movie: string };
 }) {
   const { city, movie } = await params;
-
   if (city == "viljandi") {
     return (
       <>
@@ -17,7 +16,7 @@ export default async function Index({
   } else {
     return (
       <>
-        <ApolloMovie city={city} movie={movie} />;
+        <OthersMovie movie={movie} city={city} />;
       </>
     );
   }
