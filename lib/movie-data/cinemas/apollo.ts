@@ -8,3 +8,7 @@ const url = "https://www.apollokino.ee/xml/Schedule"
 export function getApolloSchedule() {
   return JSONFromURL<ApolloJSON>(url)
 }
+
+export function getApolloEventSchedule(params: string) {
+  return JSONFromURL<ApolloJSON>(url + params)
+}

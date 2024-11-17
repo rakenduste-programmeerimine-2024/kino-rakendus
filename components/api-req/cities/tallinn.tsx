@@ -1,4 +1,5 @@
 import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
+import Link from "next/link";
 
 export default async function () {
   try {
@@ -9,7 +10,12 @@ export default async function () {
         <h1>Schedule</h1>
         {dataApollo.Shows.map((show, index) => (
           <div key={index}>
-            <h2>{show.Title}</h2>
+            {/*<h2>{show.Title}</h2>*/}
+            <Link
+              href={`/tallinn/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+            >
+              {show.Title}
+            </Link>
             <p>
               <strong>Original Title:</strong> {show.OriginalTitle}
             </p>
@@ -33,7 +39,12 @@ export default async function () {
         ))}
         {dataArtis.Shows.map((show, index) => (
           <div key={index}>
-            <h2>{show.Title}</h2>
+            {/*<h2>{show.Title}</h2>*/}
+            <Link
+              href={`/tallinn/${show.Title.replace(/[\s:]+/g, "").toLowerCase()}`}
+            >
+              {show.Title}
+            </Link>
             <p>
               <strong>Original Title:</strong> {show.OriginalTitle}
             </p>
@@ -57,7 +68,12 @@ export default async function () {
         ))}
         {dataViimsi.Schedule.Shows.Show.map((show, index) => (
           <div key={index}>
-            <h2>{show.Title}</h2>
+            {/*<h2>{show.Title}</h2>*/}
+            <Link
+              href={`/tallinn/${show.Title.replace(/[\s:]+/g, "").toLowerCase()}`}
+            >
+              {show.Title}
+            </Link>
             <p>
               <strong>Original Title:</strong> {show.OriginalTitle}
             </p>

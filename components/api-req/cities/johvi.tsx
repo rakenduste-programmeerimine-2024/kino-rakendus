@@ -1,4 +1,5 @@
 import { getJohviSchedule } from "@/lib/movie-data/cities/johvi";
+import Link from "next/link";
 
 export default async function Johvi() {
   try {
@@ -9,7 +10,12 @@ export default async function Johvi() {
         <h1>Schedule</h1>
         {data.Shows.map((show, index) => (
           <div key={index}>
-            <h2>{show.Title}</h2>
+            {/*<h2>{show.Title}</h2>*/}
+            <Link
+              href={`/johvi/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+            >
+              {show.Title}
+            </Link>
             <p>
               <strong>Original Title:</strong> {show.OriginalTitle}
             </p>

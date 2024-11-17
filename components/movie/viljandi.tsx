@@ -6,9 +6,7 @@ export default async function ViljandiMovie(movie: any) {
   try {
     const data = await getViljandiSchedule();
     const eventData = await getForumEvents();
-    console.log(data);
-    console.log(eventData);
-    console.log(movie.movie);
+
     const filteredShows = await data.Schedule.Shows.Show.filter(
       (show) => show.Title.replace(/[\s:]+/g, "").toLowerCase() == movie.movie
     );

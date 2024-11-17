@@ -1,4 +1,5 @@
 import { getSaaremaaSchedule } from "@/lib/movie-data/cities/saaremaa";
+import Link from "next/link";
 
 export default async function Saaremaa() {
   try {
@@ -8,7 +9,12 @@ export default async function Saaremaa() {
         <h1>Schedule</h1>
         {dataThule.Schedule.Shows.Show.map((show, index) => (
           <div key={index}>
-            <h2>{show.Title}</h2>
+            {/*<h2>{show.Title}</h2>*/}
+            <Link
+              href={`/saaremaa/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+            >
+              {show.Title}
+            </Link>
             <p>
               <strong>Original Title:</strong> {show.OriginalTitle}
             </p>
@@ -32,7 +38,12 @@ export default async function Saaremaa() {
         ))}
         {dataApollo.Shows.map((show, index) => (
           <div key={index}>
-            <h2>{show.Title}</h2>
+            {/*<h2>{show.Title}</h2>*/}
+            <Link
+              href={`/saaremaa/${show.Title.replace(/[\s:]+/g, "").toLowerCase()}`}
+            >
+              {show.Title}
+            </Link>
             <p>
               <strong>Original Title:</strong> {show.OriginalTitle}
             </p>
