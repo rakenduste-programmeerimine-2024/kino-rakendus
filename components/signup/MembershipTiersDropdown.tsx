@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ICinemaState, IMembershipTier } from "./membership.types";
 import { MembershipContext } from "./SignUpForm";
 import {
@@ -22,49 +22,46 @@ export default function MembershipTiersDropdown({
 }: MembershipTiersDropdownProps) {
   const memberships = useContext(MembershipContext);
 
-  // Checks whether the same type of membership already exists.
-  const isThere = (membershipId: number, cinemaId: number) => {
-    return membershipState.some(
-      (membership) =>
-        membership.id === membershipId && membership.cinema_id === cinemaId,
+  function handleRadioChange(membershipId: number, cinemaID: number) {
+    const selectedMembership = memberships.find(
+      (membership) => membership.id === membershipId,
     );
-  };
 
-  const handleCheckedChange = (membershipId: number, checked: boolean) => {
-    if (checked) {
-      const selectedmemberships = memberships.find(
-        (membership) => membership.id === membershipId,
-      );
-      if (
-        selectedmemberships &&
-        !isThere(membershipId, selectedmemberships.cinema_id)
-      ) {
-        setMembershipState((prevState) => [
-          ...prevState,
-          { ...selectedmemberships, isChecked: true },
-        ]);
-      }
-    } else {
-      setMembershipState((prevState) =>
-        prevState.filter((membership) => membership.id !== membershipId),
-      );
+    if (selectedMembership) {
+      setMembershipState((previous) => {
+        const updatedState = previous.filter(
+          (membership) => membership.cinema_id !== cinemaID,
+        );
+
+        return [...updatedState, { ...selectedMembership }];
+      });
     }
+  }
 
-    console.log("Selected memberships:");
-    console.dir(membershipState);
-  };
-  console.log("Selected memberships väljas:");
-  console.dir(membershipState);
+  useEffect(() => {
+    console.log(membershipState);
+  }, [membershipState]);
 
   return (
     <>
       {selectedCinemas.map((cinema) => (
         <div key={cinema.id}>
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              {cinema.name !== "Thule" ? cinema.name : null}
-            </DropdownMenuTrigger>
+            {/* The dropdown menu for each cinemas tiers. Shows to the user, the selectedone */}
+            {cinema.name !== "Thule" ? (
+              <DropdownMenuTrigger>
+                {cinema.name}
+                {membershipState.find(
+                  (membership) => membership.cinema_id === cinema.id,
+                )?.title &&
+                  " - " +
+                    membershipState.find(
+                      (membership) => membership.cinema_id === cinema.id,
+                    )?.title}
+              </DropdownMenuTrigger>
+            ) : null}
             <DropdownMenuContent>
+              {/* The dropdown menu for the user to check their membership tier */}
               <DropdownMenuRadioGroup>
                 {memberships.map((membership) =>
                   membership.cinema_id === cinema.id ? (
@@ -72,7 +69,9 @@ export default function MembershipTiersDropdown({
                       key={membership.id}
                       id={membership.id.toString()}
                       value={JSON.stringify(membership.id)}
-                      onClick={() => handleCheckedChange(membership.id, true)}>
+                      onClick={() =>
+                        handleRadioChange(membership.id, membership.cinema_id)
+                      }>
                       {membership.title}
                     </DropdownMenuRadioItem>
                   ) : null,
