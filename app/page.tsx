@@ -3,11 +3,13 @@ import Artis from "@/components/api-req/cinemas/artis";
 import Forum from "@/components/api-req/cinemas/forum";
 import Thule from "@/components/api-req/cinemas/thule";
 import Viimsi from "@/components/api-req/cinemas/viimsi";
+import SearchComponent from "@/components/search/search";
 import Link from "next/link";
 
 export default async function Index() {
   return (
     <>
+      <SearchComponent></SearchComponent>
       <Link href="/tallinn">Tallinn</Link>
       <Link href="/saaremaa">Saaremaa</Link>
       <Link href="/tartu">Tartu</Link>
