@@ -4,12 +4,28 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { IMembership } from "@/components/signup/membership.types";
+import {
+  ICinemaState,
+  IMembershipTier,
+} from "@/components/signup/membership.types";
 
-export const signUpAction = async (
-  formData: FormData,
-  memberships?: IMembership[],
-) => {
+export const signUpAction = async (formData: FormData) => {
+  const membershipFormData = formData.get("selectedMemberships");
+
+  const memberships = JSON.parse(
+    membershipFormData as string,
+  ) as IMembershipTier[];
+
+  let membershipIDs: number[] = [];
+
+  if (memberships) {
+    memberships.forEach((membership) => {
+      membershipIDs.push(membership.id);
+    });
+  }
+  console.dir(memberships);
+  console.dir(membershipIDs);
+
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const birthDateStr = formData.get("date-input")?.toString();
@@ -54,37 +70,24 @@ export const signUpAction = async (
       };
     }
 
+    // Additional user info
     if (data.user) {
-      // Connects the supabase auth user with user_data table.
-      const { error: userInsertError } = await supabase
-        .from("user_data")
-        .insert([
-          {
-            auth_uuid: data.user.id,
-            username,
-            first_name: firstName,
-            last_name: lastName,
-            birth_date: birthDate,
-          },
-        ]);
-
-      if (userInsertError) {
-        console.error(userInsertError);
-        return {
-          error: "Something went wrong while signing up, please try again.",
-        };
+      const { error: userAddError } = await supabase.rpc(
+        "insert_user_data_with_membership",
+        {
+          auth_uuid: data.user.id,
+          username,
+          first_name: firstName,
+          last_name: lastName,
+          birth_date: birthDate,
+          user_id: data.user.id,
+          membership_ids: membershipIDs,
+          bought_tickets: 0,
+        },
+      );
+      if (userAddError) {
+        console.error("Error inserting user data:", userAddError);
       }
-      //  else if (memberships) {
-      //   const { error: membershipInsertError } = await supabase
-      //     .from("user_membership")
-      //     .insert([
-      //       {
-      //         user_id: data.user.id,
-      //         discount_id: memberships.discount_id,
-      //         membership_id: memberships.membership_id,
-      //       },
-      //     ]);
-      // }
 
       return encodedRedirect(
         "success",

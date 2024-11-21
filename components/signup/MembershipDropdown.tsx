@@ -12,7 +12,15 @@ import { ICinemaState, IMembershipTier } from "./membership.types";
 import MembershipTiersDropdown from "./MembershipTiersDropdown";
 import { CinemaContext } from "./SignUpForm";
 
-export default function MembershipDropdown() {
+interface IMembershipToParent {
+  setParentMembership: React.Dispatch<React.SetStateAction<IMembershipTier[]>>;
+  setParentCinema: React.Dispatch<React.SetStateAction<ICinemaState[]>>;
+}
+
+export default function MembershipDropdown({
+  setParentMembership,
+  setParentCinema,
+}: IMembershipToParent) {
   const [isVisible, setIsVisible] = useState(false); // Hides the membership tiers
   const [cinemaState, setCinemaState] = useState<ICinemaState[]>([]); // Cinemas that have been selected
   const [membershipState, setMembershipState] = useState<IMembershipTier[]>([]); // For child component.
@@ -27,6 +35,7 @@ export default function MembershipDropdown() {
           ...prevState,
           { ...selectedCinemas, isChecked: true },
         ]);
+        setParentCinema((prev) => [...prev, selectedCinemas]);
         if (selectedCinemas.name !== "Thule") {
           setIsVisible(true);
         }
@@ -34,6 +43,9 @@ export default function MembershipDropdown() {
     } else {
       setCinemaState((prevState) =>
         prevState.filter((cinema) => cinema.id !== cinemaId),
+      );
+      setParentCinema((prev) =>
+        prev.filter((cinema) => cinema.id !== cinemaId),
       );
 
       if (cinemaState.length < 2) {
@@ -51,7 +63,6 @@ export default function MembershipDropdown() {
           )
           .join(", ")
       : "Select your membership(s)";
-  // TODO: add memberships to database.
 
   return (
     <>
@@ -79,6 +90,7 @@ export default function MembershipDropdown() {
           selectedCinemas={cinemaState}
           membershipState={membershipState}
           setMembershipState={setMembershipState}
+          setParentMembership={setParentMembership}
         />
       </div>
     </>

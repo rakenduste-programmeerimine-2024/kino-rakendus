@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signUpAction } from "@/app/actions";
 import MembershipDropdown from "@/components/signup/MembershipDropdown";
-import { createContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ICinemaState, IMembershipTier } from "./membership.types";
 
 export const CinemaContext = createContext<ICinemaState[]>([]);
@@ -18,6 +18,12 @@ export default function SignUpForm({
   cinemas: ICinemaState[];
   memberships: IMembershipTier[];
 }) {
+  // Needed to pass data from child to parent
+  const [parentMembership, setParentMembership] = useState<IMembershipTier[]>(
+    [],
+  );
+  const [parentCinema, setParentCinema] = useState<ICinemaState[]>([]);
+
   return (
     <>
       <form className="flex flex-col min-w-64 max-w-64 mx-auto">
@@ -70,9 +76,22 @@ export default function SignUpForm({
           <Input name="date-input" id="date-input" type="date" required />
           <CinemaContext.Provider value={cinemas}>
             <MembershipContext.Provider value={memberships}>
-              <MembershipDropdown />
+              <MembershipDropdown
+                setParentMembership={setParentMembership}
+                setParentCinema={setParentCinema}
+              />
             </MembershipContext.Provider>
           </CinemaContext.Provider>
+          <input
+            type="hidden"
+            name="selectedMemberships"
+            value={parentMembership ? JSON.stringify(parentMembership) : ""}
+          />
+          <input
+            type="hidden"
+            name="selectedCinemas"
+            value={parentCinema ? JSON.stringify(parentCinema) : ""}
+          />
           <SubmitButton formAction={signUpAction} pendingText="Signing up...">
             Sign up
           </SubmitButton>

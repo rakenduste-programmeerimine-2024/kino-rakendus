@@ -13,14 +13,21 @@ interface MembershipTiersDropdownProps {
   selectedCinemas: ICinemaState[];
   membershipState: IMembershipTier[];
   setMembershipState: React.Dispatch<React.SetStateAction<IMembershipTier[]>>;
+  setParentMembership: React.Dispatch<React.SetStateAction<IMembershipTier[]>>;
 }
 
 export default function MembershipTiersDropdown({
   selectedCinemas,
   membershipState,
   setMembershipState,
+  setParentMembership,
 }: MembershipTiersDropdownProps) {
   const memberships = useContext(MembershipContext);
+
+  useEffect(() => {
+    setParentMembership(membershipState);
+  }, [membershipState, setParentMembership]);
+
 
   function handleRadioChange(membershipId: number, cinemaID: number) {
     const selectedMembership = memberships.find(
@@ -33,14 +40,12 @@ export default function MembershipTiersDropdown({
           (membership) => membership.cinema_id !== cinemaID,
         );
 
-        return [...updatedState, { ...selectedMembership }];
+        const newState = [...updatedState, { ...selectedMembership }];
+
+        return newState;
       });
     }
   }
-
-  useEffect(() => {
-    console.log(membershipState);
-  }, [membershipState]);
 
   return (
     <>

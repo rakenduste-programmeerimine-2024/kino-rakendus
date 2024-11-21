@@ -21,7 +21,7 @@ export default async function Signup(props: {
     const supabase = await createClient();
     const { data: memberships, error: membershipFetchError } = await supabase
       .from("membership")
-      .select("*");
+      .select("id, cinema_id, title");
 
     if (membershipFetchError) {
       console.error("Error fetching memberships:", membershipFetchError);
