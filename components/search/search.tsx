@@ -9,8 +9,8 @@ const SearchComponent: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      router.push(`/search/${query}`);
+    if (query.replace(/[\s:]+/g, "").toLowerCase()) {
+      router.push(`/search/${query.replace(/[\s:]+/g, "").toLowerCase()}`);
     }
   };
 

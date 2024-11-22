@@ -126,7 +126,7 @@ export default async function SearchResult(info: any) {
 
     return (
       <div>
-        <h1>Schedule</h1>
+        <h1>Movies</h1>
         {data.map((event, index) => (
           <div key={index}>
             {/*<h2>{event.Title}</h2>*/}
