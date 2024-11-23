@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ICinemaState, IMembershipTier } from "./membership.types";
+import { ICinemaState, IMembershipTier, MembershipTiersDropdownProps } from "./membership.types";
 import { MembershipContext } from "./SignUpForm";
 import {
   DropdownMenuContent,
@@ -8,13 +8,6 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuRadioGroup,
 } from "../ui/dropdown-menu";
-
-interface MembershipTiersDropdownProps {
-  selectedCinemas: ICinemaState[];
-  membershipState: IMembershipTier[];
-  setMembershipState: React.Dispatch<React.SetStateAction<IMembershipTier[]>>;
-  setParentMembership: React.Dispatch<React.SetStateAction<IMembershipTier[]>>;
-}
 
 export default function MembershipTiersDropdown({
   selectedCinemas,
