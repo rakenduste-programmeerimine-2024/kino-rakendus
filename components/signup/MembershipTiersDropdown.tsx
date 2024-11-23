@@ -1,5 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import { ICinemaState, IMembershipTier, MembershipTiersDropdownProps } from "./membership.types";
+import { useContext, useEffect } from "react";
+import {
+  MembershipTiersDropdownProps,
+} from "./signUp.types";
 import { MembershipContext } from "./SignUpForm";
 import {
   DropdownMenuContent,
@@ -20,7 +22,6 @@ export default function MembershipTiersDropdown({
   useEffect(() => {
     setParentMembership(membershipState);
   }, [membershipState, setParentMembership]);
-
 
   function handleRadioChange(membershipId: number, cinemaID: number) {
     const selectedMembership = memberships.find(

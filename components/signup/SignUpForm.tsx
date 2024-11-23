@@ -5,8 +5,8 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signUpAction } from "@/app/actions";
 import MembershipDropdown from "@/components/signup/MembershipDropdown";
-import { createContext, useContext, useEffect, useState } from "react";
-import { ICinemaState, IMembershipTier } from "./membership.types";
+import { createContext, useState } from "react";
+import { ICinemaState, IMembershipTier } from "./signUp.types";
 
 export const CinemaContext = createContext<ICinemaState[]>([]);
 export const MembershipContext = createContext<IMembershipTier[]>([]);
@@ -55,6 +55,15 @@ export default function SignUpForm({
             name="password"
             id="password"
             placeholder="Your password"
+            minLength={6}
+            required
+          />
+          <Label htmlFor="confirm-password">Confirm password</Label>
+          <Input
+            type="password"
+            name="confirm-password"
+            id="confirm-password"
+            placeholder="Confirm your password"
             minLength={6}
             required
           />
