@@ -1,13 +1,50 @@
 "use server";
-
 import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import {
-  ICinemaState,
+  IFormValidationData,
   IMembershipTier,
-} from "@/components/signup/membership.types";
+  ValidationResult,
+} from "@/components/signup/signUp.types";
+
+function validateFormData(data: IFormValidationData): ValidationResult {
+  let errorMessages: string[] = [];
+
+  if (data.password !== data.confirmPassword) {
+    errorMessages.push("Passwords do not match");
+  }
+
+  if (!data.email || !data.password) {
+    errorMessages.push("Email and password are required");
+  }
+
+  if (!data.username) {
+    errorMessages.push("Username is required");
+  }
+
+  if (!data.birthDateStr) {
+    errorMessages.push("Date of birth is required");
+  }
+
+  if (!data.firstName || !data.lastName) {
+    errorMessages.push("Please enter your first and last name");
+  }
+
+  // If there are any errors, the validations success is false
+  // For parity, I've left the error type into formMessage type.
+  if (errorMessages.length > 0) {
+    if (errorMessages.length === 1) {
+      return { success: false, error: errorMessages[0] };
+    } else {
+      return { success: false, multiError: errorMessages };
+    }
+  }
+
+  // No errors, returns validation was successful.
+  return { success: true };
+}
 
 export const signUpAction = async (formData: FormData) => {
   const membershipFormData = formData.get("selectedMemberships");
@@ -23,11 +60,10 @@ export const signUpAction = async (formData: FormData) => {
       membershipIDs.push(membership.id);
     });
   }
-  console.dir(memberships);
-  console.dir(membershipIDs);
 
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
+  const confirmPassword = formData.get("confirm-password")?.toString();
   const birthDateStr = formData.get("date-input")?.toString();
   const username = formData.get("username")?.toString();
   const firstName = formData.get("first-name")?.toString();
@@ -36,28 +72,33 @@ export const signUpAction = async (formData: FormData) => {
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
-  if (!email || !password) {
-    return { error: "Email and password are required" };
-  }
+  const validationData = {
+    email,
+    password,
+    confirmPassword,
+    birthDateStr,
+    username,
+    firstName,
+    lastName,
+  };
 
-  if (!username) {
-    return { error: "Username is required" };
-  }
+  const validationResult = validateFormData(validationData);
 
-  if (!birthDateStr) {
-    return { error: "Date of birth is required" };
+  if (!validationResult.success) {
+    if ("error" in validationResult) {
+      return encodedRedirect("error", "/sign-up", validationResult.error);
+    } else if ("multiError" in validationResult) {
+      const errorMsg = validationResult.multiError.join("|");
+      return encodedRedirect("multiError", "/sign-up", errorMsg);
+    }
   }
-
-  if (!firstName || !lastName) {
-    return { error: "Please enter your first and last name" };
-  }
-
-  const birthDate = new Date(birthDateStr);
 
   try {
+    const birthDate = birthDateStr ? new Date(birthDateStr) : null;
+
     const { data, error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
+      email: email!,
+      password: password!,
       options: {
         emailRedirectTo: `${origin}/auth/callback`,
       },
@@ -72,6 +113,7 @@ export const signUpAction = async (formData: FormData) => {
 
     // Additional user info
     if (data.user) {
+      // Should be able to insert without memberships
       const { error: userAddError } = await supabase.rpc(
         "insert_user_data_with_membership",
         {

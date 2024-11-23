@@ -7,11 +7,14 @@ import {
   DropdownMenuCheckboxItem,
 } from "../ui/dropdown-menu";
 import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
-import { ICinemaState, IMembershipTier, IMembershipToParent } from "./membership.types";
+import {
+  ICinemaState,
+  IMembershipTier,
+  IMembershipToParent,
+} from "./signUp.types";
 
 import MembershipTiersDropdown from "./MembershipTiersDropdown";
 import { CinemaContext } from "./SignUpForm";
-
 
 export default function MembershipDropdown({
   setParentMembership,

@@ -1,5 +1,4 @@
 import { FormMessage, Message } from "@/components/form-message";
-import { SmtpMessage } from "../smtp-message";
 import SignUpForm from "@/components/signup/SignUpForm";
 import { createClient } from "@/utils/supabase/server";
 
@@ -53,7 +52,6 @@ export default async function Signup(props: {
     <>
       <SignUpForm cinemas={res.cinemas} memberships={res.memberships} />
       <FormMessage message={searchParams} />
-      <SmtpMessage />
     </>
   );
 }
