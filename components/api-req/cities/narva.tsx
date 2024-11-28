@@ -1,4 +1,5 @@
 import { getNarvaSchedule } from "@/lib/movie-data/cities/narva";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function Narva() {
@@ -12,7 +13,7 @@ export default async function Narva() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/narva/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
+              href={`/narva/${removeSpecialCharacters(show.OriginalTitle)}`}
             >
               {show.Title}
             </Link>

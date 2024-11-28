@@ -1,4 +1,5 @@
 import { getJohviSchedule } from "@/lib/movie-data/cities/johvi";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function Johvi() {
@@ -12,7 +13,7 @@ export default async function Johvi() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/johvi/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
+              href={`/johvi/${removeSpecialCharacters(show.OriginalTitle)}`}
             >
               {show.Title}
             </Link>

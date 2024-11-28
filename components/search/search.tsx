@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { removeSpecialCharacters } from "@/lib/utils";
 
 const SearchComponent: React.FC = () => {
   const [query, setQuery] = useState<string>("");
@@ -9,12 +10,8 @@ const SearchComponent: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      query.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()
-    ) {
-      router.push(
-        `/search/${query.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`
-      );
+    if (removeSpecialCharacters(query)) {
+      router.push(`/search/${removeSpecialCharacters(query)}`);
     }
   };
 
