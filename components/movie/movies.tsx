@@ -140,15 +140,11 @@ export default async function OthersMovie(info: any) {
         });
       });
     } else {
-      console.time("getEstoniaSchedule");
-
       const [apolloData, artisData, viimsiData, thuleData] =
         await Promise.all(getEstoniaSchedule());
 
       const [artisEventData, viimsiEventData, thuleEventData] =
         await Promise.all(getEstoniaEvents());
-
-      console.timeEnd("getEstoniaSchedule");
       for (const movie of eventData) {
         if (removeSpecialCharacters(movie.OriginalTitle) == decodedMovie) {
           apolloData.Shows.forEach((element) => {
