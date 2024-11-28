@@ -21,10 +21,10 @@ export default async function SearchResult(info: any) {
     const eventData = await getApolloEvents();
     eventData.forEach((event) => {
       if (
-        event.OriginalTitle.replace(/[\s:]+/g, "")
+        event.OriginalTitle.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "")
           .toLowerCase()
           .includes(decodedMovie) ||
-        event.Title.replace(/[\s:]+/g, "")
+        event.Title.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "")
           .toLowerCase()
           .includes(decodedMovie)
       ) {
@@ -42,10 +42,10 @@ export default async function SearchResult(info: any) {
     const artisEventData = await getArtisEvents();
     artisEventData.forEach((event) => {
       if (
-        event.OriginalTitle.replace(/[\s:]+/g, "")
+        event.OriginalTitle.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "")
           .toLowerCase()
           .includes(decodedMovie) ||
-        event.Title.replace(/[\s:]+/g, "")
+        event.Title.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "")
           .toLowerCase()
           .includes(decodedMovie)
       ) {
@@ -63,10 +63,10 @@ export default async function SearchResult(info: any) {
     const viimsiEventData = await getViimsiEvents();
     viimsiEventData.Events.Event.forEach((event) => {
       if (
-        event.OriginalTitle.replace(/[\s:]+/g, "")
+        event.OriginalTitle.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "")
           .toLowerCase()
           .includes(decodedMovie) ||
-        event.Title.replace(/[\s:]+/g, "")
+        event.Title.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "")
           .toLowerCase()
           .includes(decodedMovie)
       ) {
@@ -84,10 +84,10 @@ export default async function SearchResult(info: any) {
     const thuleEventData = await getThuleEvents();
     thuleEventData.Events.Event.forEach((event) => {
       if (
-        event.OriginalTitle.replace(/[\s:]+/g, "")
+        event.OriginalTitle.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "")
           .toLowerCase()
           .includes(decodedMovie) ||
-        event.Title.replace(/[\s:]+/g, "")
+        event.Title.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "")
           .toLowerCase()
           .includes(decodedMovie)
       ) {
@@ -109,7 +109,7 @@ export default async function SearchResult(info: any) {
           <div key={index}>
             {/*<h2>{event.Title}</h2>*/}
             <Link
-              href={`/eesti/${event.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/eesti/${event.OriginalTitle.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "").toLowerCase()}`}
             >
               {event.Title}
             </Link>
