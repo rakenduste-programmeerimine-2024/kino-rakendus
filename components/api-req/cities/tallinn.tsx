@@ -12,7 +12,7 @@ export default async function () {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/tallinn/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/tallinn/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>
@@ -41,7 +41,7 @@ export default async function () {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/tallinn/${show.Title.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/tallinn/${show.Title.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>
@@ -70,7 +70,7 @@ export default async function () {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/tallinn/${show.Title.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/tallinn/${show.Title.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>

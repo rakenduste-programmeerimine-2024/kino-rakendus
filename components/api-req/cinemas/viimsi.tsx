@@ -10,7 +10,7 @@ export default async function Viimsi() {
           <div key={index}>
             {/*<h2>{event.Title}</h2>*/}
             <Link
-              href={`/eesti/${event.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/eesti/${event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {event.Title}
             </Link>

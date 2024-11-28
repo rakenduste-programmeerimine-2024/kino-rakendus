@@ -12,7 +12,7 @@ export default async function Tartu() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/tartu/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/tartu/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>

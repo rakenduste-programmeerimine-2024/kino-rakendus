@@ -12,7 +12,7 @@ export default async function Narva() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/narva/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/narva/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>

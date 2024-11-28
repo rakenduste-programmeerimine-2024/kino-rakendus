@@ -12,7 +12,7 @@ export default async function Parnu() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/parnu/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/parnu/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>
