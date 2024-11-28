@@ -60,27 +60,6 @@ export default async function SearchResult(info: any) {
       }
     });
 
-    const forumEventData = await getForumEvents();
-    forumEventData.Events.Event.forEach((event) => {
-      if (
-        event.OriginalTitle.replace(/[\s:]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie) ||
-        event.Title.replace(/[\s:]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie)
-      ) {
-        data.push({
-          Title: event.Title,
-          OriginalTitle: event.OriginalTitle,
-          EventMediumImagePortrait: event.Images.EventMediumImagePortrait,
-          Rating: event.Rating,
-          ShortSynopsis: event.ShortSynopsis,
-          Genres: event.Genres,
-        });
-      }
-    });
-
     const viimsiEventData = await getViimsiEvents();
     viimsiEventData.Events.Event.forEach((event) => {
       if (
