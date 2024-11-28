@@ -1,5 +1,4 @@
-import OthersMovie from "@/components/movie/others";
-import ViljandiMovie from "@/components/movie/viljandi";
+import Movie from "@/components/movie/movies";
 import SearchResult from "@/components/search/searchresult";
 
 export default async function Index({
@@ -15,16 +14,10 @@ export default async function Index({
         <SearchResult movie={movie} />;
       </>
     );
-  } else if (city == "viljandi") {
-    return (
-      <>
-        <ViljandiMovie movie={movie} />;
-      </>
-    );
   } else {
     return (
       <>
-        <OthersMovie movie={movie} city={city} />;
+        <Movie movie={movie} city={city} />;
       </>
     );
   }

@@ -1,6 +1,5 @@
 import { getApolloEvents } from "@/lib/event-data/cinemas/apollo-events";
 import { getArtisEvents } from "@/lib/event-data/cinemas/artis-events";
-import { getForumEvents } from "@/lib/event-data/cinemas/forum-events";
 import { getThuleEvents } from "@/lib/event-data/cinemas/thule-events";
 import { getViimsiEvents } from "@/lib/event-data/cinemas/viimsi-events";
 import Link from "next/link";
