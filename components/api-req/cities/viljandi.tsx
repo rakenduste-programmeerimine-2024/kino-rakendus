@@ -4,10 +4,11 @@ import Link from "next/link";
 export default async function Viljandi() {
   try {
     const data = await getViljandiSchedule();
+    console.log(data);
     return (
       <div>
         <h1>Schedule</h1>
-        {data.Shows.map((show, index) => (
+        {data.Schedule.Shows.Show.map((show, index) => (
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
