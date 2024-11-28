@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 const SearchComponent: React.FC = () => {
   const [query, setQuery] = useState<string>("");
@@ -9,12 +10,8 @@ const SearchComponent: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      query.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()
-    ) {
-      router.push(
-        `/search/${query.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`
-      );
+    if (query.replace(/[\s:]+/g, "").toLowerCase()) {
+      router.push(`/search/${query.replace(/[\s:]+/g, "").toLowerCase()}`);
     }
   };
 
@@ -27,9 +24,10 @@ const SearchComponent: React.FC = () => {
         placeholder="Search..."
         className="border rounded p-2 w-full"
       />
-      <button type="submit" className="ml-2 p-2 bg-blue-500 text-white rounded">
+
+      <Button type="submit" className="ml-2 p-2">
         Search
-      </button>
+      </Button>
     </form>
   );
 };
