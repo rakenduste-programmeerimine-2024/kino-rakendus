@@ -1,6 +1,5 @@
 import ApolloKino from "@/components/api-req/cinemas/apollokino";
 import Artis from "@/components/api-req/cinemas/artis";
-import Forum from "@/components/api-req/cinemas/forum";
 import Thule from "@/components/api-req/cinemas/thule";
 import Viimsi from "@/components/api-req/cinemas/viimsi";
 import Johvi from "@/components/api-req/cities/johvi";
@@ -105,9 +104,6 @@ export default async function Index({ params }: { params: { city: string } }) {
         <hr />
         <h1 className="bold text-pink-500">Thule</h1>
         <Thule />
-        <hr />
-        <h1 className="bold text-pink-500">Forum</h1>
-        <Forum />
       </main>
     </>
   );

@@ -7,7 +7,7 @@ export default async function Viljandi() {
     return (
       <div>
         <h1>Schedule</h1>
-        {data.Schedule.Shows.Show.map((show, index) => (
+        {data.Shows.map((show, index) => (
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link

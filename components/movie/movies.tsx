@@ -1,11 +1,9 @@
 import { getApolloEvents } from "@/lib/event-data/cinemas/apollo-events";
 import { getArtisEvents } from "@/lib/event-data/cinemas/artis-events";
-import { getForumEvents } from "@/lib/event-data/cinemas/forum-events";
 import { getThuleEvents } from "@/lib/event-data/cinemas/thule-events";
 import { getViimsiEvents } from "@/lib/event-data/cinemas/viimsi-events";
 import { getApolloEventSchedule } from "@/lib/movie-data/cinemas/apollo";
 import { getArtisEventSchedule } from "@/lib/movie-data/cinemas/artis";
-import { getForumEventSchedule } from "@/lib/movie-data/cinemas/forum";
 import { getThuleEventSchedule } from "@/lib/movie-data/cinemas/thule";
 import { getViimsiEventSchedule } from "@/lib/movie-data/cinemas/viimsi";
 import { getJohviSchedule } from "@/lib/movie-data/cities/johvi";
@@ -14,6 +12,7 @@ import { getParnuSchedule } from "@/lib/movie-data/cities/parnu";
 import { getSaaremaaSchedule } from "@/lib/movie-data/cities/saaremaa";
 import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
 import { getTartuSchedule } from "@/lib/movie-data/cities/tartu";
+import { getViljandiSchedule } from "@/lib/movie-data/cities/viljandi";
 import Link from "next/link";
 
 interface Data {
@@ -101,6 +100,18 @@ export default async function OthersMovie(info: any) {
       });
     } else if (info.city == "parnu") {
       const initialData = await getParnuSchedule();
+      initialData.Shows.forEach((element) => {
+        data.push({
+          dttmShowStart: element.dttmShowStart,
+          Title: element.Title,
+          OriginalTitle: element.OriginalTitle,
+          ShowURL: element.ShowURL,
+          Theatre: element.Theatre,
+          TheatreAuditorium: element.TheatreAuditorium,
+        });
+      });
+    } else if (info.city == "viljandi") {
+      const initialData = await getViljandiSchedule();
       initialData.Shows.forEach((element) => {
         data.push({
           dttmShowStart: element.dttmShowStart,
