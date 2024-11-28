@@ -9,6 +9,7 @@ import {
   ValidationResult,
 } from "@/components/signup/signUp.types";
 
+
 function validateFormData(data: IFormValidationData): ValidationResult {
   let errorMessages: string[] = [];
 
@@ -137,6 +138,7 @@ export const signUpAction = async (formData: FormData) => {
         "Thanks for signing up! Please check your email for a verification link.",
       );
     } else {
+      encodedRedirect("error", "/sign-up", "Something brokey");
       throw new Error("Something went wrong. Please try again.");
     }
   } catch (error: any) {
