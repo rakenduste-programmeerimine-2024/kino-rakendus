@@ -175,27 +175,6 @@ export default async function OthersMovie(info: any) {
           });
         }
       }
-      const forumEventData = await getForumEvents();
-      for (const movie of forumEventData.Events.Event) {
-        if (
-          movie.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase() ==
-          decodedMovie
-        ) {
-          const forumData = await getForumEventSchedule(
-            "?nrOfDays=14&eventID=" + movie.ID
-          );
-          forumData.Schedule.Shows.Show.forEach((element) => {
-            data.push({
-              dttmShowStart: element.dttmShowStart,
-              Title: element.Title,
-              OriginalTitle: element.OriginalTitle,
-              ShowURL: element.ShowURL,
-              Theatre: element.Theatre,
-              TheatreAuditorium: element.TheatreAuditorium,
-            });
-          });
-        }
-      }
       const viimsiEventData = await getViimsiEvents();
       for (const movie of viimsiEventData.Events.Event) {
         if (

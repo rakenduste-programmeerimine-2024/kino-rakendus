@@ -7,7 +7,7 @@ export default async function Forum() {
     return (
       <div>
         <h1>Schedule</h1>
-        {data.Events.Event.map((event, index) => (
+        {data.map((event, index) => (
           <div key={index}>
             {/*<h2>{event.Title}</h2>*/}
             <Link
