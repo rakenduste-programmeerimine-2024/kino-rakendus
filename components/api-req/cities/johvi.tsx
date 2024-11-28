@@ -12,7 +12,7 @@ export default async function Johvi() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/johvi/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/johvi/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>

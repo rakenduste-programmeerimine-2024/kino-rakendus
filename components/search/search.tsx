@@ -9,9 +9,11 @@ const SearchComponent: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "").toLowerCase()) {
+    if (
+      query.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()
+    ) {
       router.push(
-        `/search/${query.replace(/[\s:%.!@#$^&*()\-_=+[\]{}|]+/g, "").toLowerCase()}`
+        `/search/${query.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`
       );
     }
   };

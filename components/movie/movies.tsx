@@ -147,8 +147,10 @@ export default async function OthersMovie(info: any) {
     } else {
       for (const movie of eventData) {
         if (
-          movie.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase() ==
-          decodedMovie
+          movie.OriginalTitle.replace(
+            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
+            ""
+          ).toLowerCase() == decodedMovie
         ) {
           const apolloData = await getApolloEventSchedule(
             "?nrOfDays=14&eventID=" + movie.ID
@@ -168,8 +170,10 @@ export default async function OthersMovie(info: any) {
       const artisEventData = await getArtisEvents();
       for (const movie of artisEventData) {
         if (
-          movie.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase() ==
-          decodedMovie
+          movie.OriginalTitle.replace(
+            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
+            ""
+          ).toLowerCase() == decodedMovie
         ) {
           const artisData = await getArtisEventSchedule(
             "?nrOfDays=14&eventID=" + movie.ID
@@ -189,8 +193,10 @@ export default async function OthersMovie(info: any) {
       const viimsiEventData = await getViimsiEvents();
       for (const movie of viimsiEventData.Events.Event) {
         if (
-          movie.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase() ==
-          decodedMovie
+          movie.OriginalTitle.replace(
+            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
+            ""
+          ).toLowerCase() == decodedMovie
         ) {
           const viimsiData = await getViimsiEventSchedule(
             "?nrOfDays=14&eventID=" + movie.ID
@@ -210,8 +216,10 @@ export default async function OthersMovie(info: any) {
       const thuleEventData = await getThuleEvents();
       for (const movie of thuleEventData.Events.Event) {
         if (
-          movie.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase() ==
-          decodedMovie
+          movie.OriginalTitle.replace(
+            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
+            ""
+          ).toLowerCase() == decodedMovie
         ) {
           const thuleData = await getThuleEventSchedule(
             "?nrOfDays=14&eventID=" + movie.ID
@@ -232,11 +240,17 @@ export default async function OthersMovie(info: any) {
 
     const filteredShows = await data.filter(
       (show) =>
-        show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase() == decodedMovie
+        show.OriginalTitle.replace(
+          /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
+          ""
+        ).toLowerCase() == decodedMovie
     );
     const filteredEvents = await eventData.filter(
       (event) =>
-        event.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase() == decodedMovie
+        event.OriginalTitle.replace(
+          /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
+          ""
+        ).toLowerCase() == decodedMovie
     );
     const firstShow = await filteredEvents[0];
 

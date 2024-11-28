@@ -11,7 +11,7 @@ export default async function Saaremaa() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/saaremaa/${show.OriginalTitle.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/saaremaa/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>
@@ -40,7 +40,7 @@ export default async function Saaremaa() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/saaremaa/${show.Title.replace(/[\s:]+/g, "").toLowerCase()}`}
+              href={`/saaremaa/${show.Title.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
               {show.Title}
             </Link>
