@@ -6,5 +6,5 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function removeSpecialCharacters(input: string): string {
-  return input.replace(/[^a-zA-Z]/g, "").toLowerCase();
+  return input.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 }
