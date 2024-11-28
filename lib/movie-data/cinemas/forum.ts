@@ -1,13 +1,14 @@
-import { XML2JSONFromURL } from ".."
-import { ForumXML } from "./forum-types"
+import { JSONFromURL } from ".."
+import { ApolloJSON } from "./apollo-types"
 
 
-const url = "https://www.forumcinemas.ee/xml/Schedule"
+//const url = "https://www.forumcinemas.ee/xml/Schedule"
+const url = "https://www.apollokino.ee/xml/Schedule"
 
 export function getForumSchedule() {
-  return XML2JSONFromURL<ForumXML>(url)
+  return JSONFromURL<ApolloJSON>(url)
 }
 
 export function getForumEventSchedule(params: string) {
-  return XML2JSONFromURL<ForumXML>(url + params)
+  return JSONFromURL<ApolloJSON>(url + params)
 }
