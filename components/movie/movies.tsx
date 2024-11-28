@@ -1,11 +1,4 @@
 import { getApolloEvents } from "@/lib/event-data/cinemas/apollo-events";
-import { getArtisEvents } from "@/lib/event-data/cinemas/artis-events";
-import { getThuleEvents } from "@/lib/event-data/cinemas/thule-events";
-import { getViimsiEvents } from "@/lib/event-data/cinemas/viimsi-events";
-import { getApolloEventSchedule } from "@/lib/movie-data/cinemas/apollo";
-import { getArtisEventSchedule } from "@/lib/movie-data/cinemas/artis";
-import { getThuleEventSchedule } from "@/lib/movie-data/cinemas/thule";
-import { getViimsiEventSchedule } from "@/lib/movie-data/cinemas/viimsi";
 import { getJohviSchedule } from "@/lib/movie-data/cities/johvi";
 import { getNarvaSchedule } from "@/lib/movie-data/cities/narva";
 import { getParnuSchedule } from "@/lib/movie-data/cities/parnu";
@@ -13,6 +6,8 @@ import { getSaaremaaSchedule } from "@/lib/movie-data/cities/saaremaa";
 import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
 import { getTartuSchedule } from "@/lib/movie-data/cities/tartu";
 import { getViljandiSchedule } from "@/lib/movie-data/cities/viljandi";
+import { getEstoniaEvents, getEstoniaSchedule } from "@/lib/movie-data/eesti";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
 interface Data {
@@ -145,16 +140,17 @@ export default async function OthersMovie(info: any) {
         });
       });
     } else {
+      console.time("getEstoniaSchedule");
+
+      const [apolloData, artisData, viimsiData, thuleData] =
+        await Promise.all(getEstoniaSchedule());
+
+      const [artisEventData, viimsiEventData, thuleEventData] =
+        await Promise.all(getEstoniaEvents());
+
+      console.timeEnd("getEstoniaSchedule");
       for (const movie of eventData) {
-        if (
-          movie.OriginalTitle.replace(
-            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-            ""
-          ).toLowerCase() == decodedMovie
-        ) {
-          const apolloData = await getApolloEventSchedule(
-            "?nrOfDays=14&eventID=" + movie.ID
-          );
+        if (removeSpecialCharacters(movie.OriginalTitle) == decodedMovie) {
           apolloData.Shows.forEach((element) => {
             data.push({
               dttmShowStart: element.dttmShowStart,
@@ -167,17 +163,9 @@ export default async function OthersMovie(info: any) {
           });
         }
       }
-      const artisEventData = await getArtisEvents();
+
       for (const movie of artisEventData) {
-        if (
-          movie.OriginalTitle.replace(
-            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-            ""
-          ).toLowerCase() == decodedMovie
-        ) {
-          const artisData = await getArtisEventSchedule(
-            "?nrOfDays=14&eventID=" + movie.ID
-          );
+        if (removeSpecialCharacters(movie.OriginalTitle) == decodedMovie) {
           artisData.Shows.forEach((element) => {
             data.push({
               dttmShowStart: element.dttmShowStart,
@@ -190,17 +178,8 @@ export default async function OthersMovie(info: any) {
           });
         }
       }
-      const viimsiEventData = await getViimsiEvents();
       for (const movie of viimsiEventData.Events.Event) {
-        if (
-          movie.OriginalTitle.replace(
-            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-            ""
-          ).toLowerCase() == decodedMovie
-        ) {
-          const viimsiData = await getViimsiEventSchedule(
-            "?nrOfDays=14&eventID=" + movie.ID
-          );
+        if (removeSpecialCharacters(movie.OriginalTitle) == decodedMovie) {
           viimsiData.Schedule.Shows.Show.forEach((element) => {
             data.push({
               dttmShowStart: element.dttmShowStart,
@@ -213,17 +192,8 @@ export default async function OthersMovie(info: any) {
           });
         }
       }
-      const thuleEventData = await getThuleEvents();
       for (const movie of thuleEventData.Events.Event) {
-        if (
-          movie.OriginalTitle.replace(
-            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-            ""
-          ).toLowerCase() == decodedMovie
-        ) {
-          const thuleData = await getThuleEventSchedule(
-            "?nrOfDays=14&eventID=" + movie.ID
-          );
+        if (removeSpecialCharacters(movie.OriginalTitle) == decodedMovie) {
           thuleData.Schedule.Shows.Show.forEach((element) => {
             data.push({
               dttmShowStart: element.dttmShowStart,
@@ -239,18 +209,10 @@ export default async function OthersMovie(info: any) {
     }
 
     const filteredShows = await data.filter(
-      (show) =>
-        show.OriginalTitle.replace(
-          /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-          ""
-        ).toLowerCase() == decodedMovie
+      (show) => removeSpecialCharacters(show.OriginalTitle) == decodedMovie
     );
     const filteredEvents = await eventData.filter(
-      (event) =>
-        event.OriginalTitle.replace(
-          /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-          ""
-        ).toLowerCase() == decodedMovie
+      (event) => removeSpecialCharacters(event.OriginalTitle) == decodedMovie
     );
     const firstShow = await filteredEvents[0];
 

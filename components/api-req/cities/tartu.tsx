@@ -1,4 +1,5 @@
 import { getTartuSchedule } from "@/lib/movie-data/cities/tartu";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function Tartu() {
@@ -12,7 +13,7 @@ export default async function Tartu() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/tartu/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
+              href={`/tartu/${removeSpecialCharacters(show.OriginalTitle)}`}
             >
               {show.Title}
             </Link>

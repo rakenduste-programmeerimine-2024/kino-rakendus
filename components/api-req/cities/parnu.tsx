@@ -1,4 +1,5 @@
 import { getParnuSchedule } from "@/lib/movie-data/cities/parnu";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function Parnu() {
@@ -12,7 +13,7 @@ export default async function Parnu() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/parnu/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
+              href={`/parnu/${removeSpecialCharacters(show.OriginalTitle)}`}
             >
               {show.Title}
             </Link>
