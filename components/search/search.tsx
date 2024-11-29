@@ -21,7 +21,7 @@ const SearchComponent: React.FC = () => {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search..."
+        placeholder="Otsi filmi..."
         className="border rounded p-2 w-full"
       />
       <button type="submit" className="ml-2 p-2 bg-blue-500 text-white rounded">
