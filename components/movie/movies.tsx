@@ -142,20 +142,23 @@ export default async function OthersMovie(info: any) {
     } else {
       const [apolloData, artisData, viimsiData, thuleData] =
         await Promise.all(getEstoniaSchedule());
-
       const [artisEventData, viimsiEventData, thuleEventData] =
         await Promise.all(getEstoniaEvents());
       for (const movie of eventData) {
         if (removeSpecialCharacters(movie.OriginalTitle) == decodedMovie) {
           apolloData.Shows.forEach((element) => {
-            data.push({
-              dttmShowStart: element.dttmShowStart,
-              Title: element.Title,
-              OriginalTitle: element.OriginalTitle,
-              ShowURL: element.ShowURL,
-              Theatre: element.Theatre,
-              TheatreAuditorium: element.TheatreAuditorium,
-            });
+            console.log(element.Theatre);
+            console.log(movie.OriginalTitle);
+            if (element.OriginalTitle == movie.OriginalTitle) {
+              data.push({
+                dttmShowStart: element.dttmShowStart,
+                Title: element.Title,
+                OriginalTitle: element.OriginalTitle,
+                ShowURL: element.ShowURL,
+                Theatre: element.Theatre,
+                TheatreAuditorium: element.TheatreAuditorium,
+              });
+            }
           });
         }
       }
@@ -163,50 +166,57 @@ export default async function OthersMovie(info: any) {
       for (const movie of artisEventData) {
         if (removeSpecialCharacters(movie.OriginalTitle) == decodedMovie) {
           artisData.Shows.forEach((element) => {
-            data.push({
-              dttmShowStart: element.dttmShowStart,
-              Title: element.Title,
-              OriginalTitle: element.OriginalTitle,
-              ShowURL: element.ShowURL,
-              Theatre: element.Theatre,
-              TheatreAuditorium: element.TheatreAuditorium,
-            });
+            if (element.OriginalTitle == decodedMovie) {
+              data.push({
+                dttmShowStart: element.dttmShowStart,
+                Title: element.Title,
+                OriginalTitle: element.OriginalTitle,
+                ShowURL: element.ShowURL,
+                Theatre: element.Theatre,
+                TheatreAuditorium: element.TheatreAuditorium,
+              });
+            }
           });
         }
       }
       for (const movie of viimsiEventData.Events.Event) {
         if (removeSpecialCharacters(movie.OriginalTitle) == decodedMovie) {
           viimsiData.Schedule.Shows.Show.forEach((element) => {
-            data.push({
-              dttmShowStart: element.dttmShowStart,
-              Title: element.Title,
-              OriginalTitle: element.OriginalTitle,
-              ShowURL: element.ShowURL,
-              Theatre: element.Theatre,
-              TheatreAuditorium: element.TheatreAuditorium,
-            });
+            if (element.OriginalTitle == decodedMovie) {
+              data.push({
+                dttmShowStart: element.dttmShowStart,
+                Title: element.Title,
+                OriginalTitle: element.OriginalTitle,
+                ShowURL: element.ShowURL,
+                Theatre: element.Theatre,
+                TheatreAuditorium: element.TheatreAuditorium,
+              });
+            }
           });
         }
       }
       for (const movie of thuleEventData.Events.Event) {
         if (removeSpecialCharacters(movie.OriginalTitle) == decodedMovie) {
           thuleData.Schedule.Shows.Show.forEach((element) => {
-            data.push({
-              dttmShowStart: element.dttmShowStart,
-              Title: element.Title,
-              OriginalTitle: element.OriginalTitle,
-              ShowURL: element.ShowURL,
-              Theatre: element.Theatre,
-              TheatreAuditorium: element.TheatreAuditorium,
-            });
+            if (element.OriginalTitle == decodedMovie) {
+              data.push({
+                dttmShowStart: element.dttmShowStart,
+                Title: element.Title,
+                OriginalTitle: element.OriginalTitle,
+                ShowURL: element.ShowURL,
+                Theatre: element.Theatre,
+                TheatreAuditorium: element.TheatreAuditorium,
+              });
+            }
           });
         }
       }
     }
-
+    console.log(data);
     const filteredShows = await data.filter(
       (show) => removeSpecialCharacters(show.OriginalTitle) == decodedMovie
     );
+    console.log(filteredShows);
     const filteredEvents = await eventData.filter(
       (event) => removeSpecialCharacters(event.OriginalTitle) == decodedMovie
     );

@@ -1,5 +1,6 @@
 import { JSONFromURL, XML2JSONFromURL } from "."
 import { EventsData } from "../event-data/cinemas/event-types"
+import { getApolloSchedule } from "./cinemas/apollo"
 import { ApolloJSON } from "./cinemas/apollo-types"
 import { ArtisJSON } from "./cinemas/artis-types"
 import { ThuleXML } from "./cinemas/thule-types"
@@ -25,7 +26,8 @@ export function getEstoniaSchedule(): [
     Promise<ViimsiXML>,
     Promise<ThuleXML>
   ] {
-  return [JSONFromURL<ApolloJSON>(urlApollo), JSONFromURL<ArtisJSON>(urlArtis), XML2JSONFromURL<ViimsiXML>(urlViimsi), XML2JSONFromURL<ThuleXML>(urlThule)]
+    const apolloData: Promise<ApolloJSON> = getApolloSchedule()
+  return [apolloData, JSONFromURL<ArtisJSON>(urlArtis), XML2JSONFromURL<ViimsiXML>(urlViimsi), XML2JSONFromURL<ThuleXML>(urlThule)]
 }
 
 export function getEstoniaEvents(): [
