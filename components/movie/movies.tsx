@@ -204,7 +204,7 @@ export default function OthersMovie(info: any) {
   return (
     <div className="max-w-3xl mx-auto p-5">
       {firstShow && (
-        <div className="flex flex-col border border-gray-300 rounded-lg p-7 mb-5 ">
+        <div className="flex flex-col border border-gray-300 rounded-lg p-7 mb-5">
           {firstShow.Images?.EventMediumImagePortrait && (
             <div className="w-full mb-5 justify-center justify-items-center">
               <img
@@ -212,24 +212,27 @@ export default function OthersMovie(info: any) {
                 alt={firstShow.Title}
                 className="w-full md:w-1/2 rounded-lg object-cover"
               />
-              {/* md:w-1/2 -- Changes the width of the image */}
+              {/* md:w-1/2 -- Changes the width of the image, maybe needs to be adjusted. */}
             </div>
           )}
 
+          {/* This will make the text more readable, at the cost of the page looking clunkier */}
           {/* <span className="text-justify text-lg"> */}
           <div className="flex flex-col justify-between w-full">
-            <h1 className="mb-2 text-4xl px-1"> {firstShow.Title} </h1>
-            <p className="mb-2 translate-x-1 italic border-b-4 my-3">
+            <h1 className="mb-2 text-4xl px-1 hover:bg-slate-400 hover:bg-opacity-5">
+              {firstShow.Title}{" "}
+            </h1>
+            <p className="mb-2 translate-x-1 italic border-b-4 my-3 hover:bg-slate-400 hover:bg-opacity-5">
               {firstShow.OriginalTitle}
             </p>
 
-            <p className="mb-2 border-b-2 my-3">
+            <p className="mb-2 border-b-2 my-3 hover:bg-slate-400 hover:bg-opacity-5">
               <strong>Vanusepiirang:</strong> {firstShow.Rating}
             </p>
-            <p className="mb-2 border-b-2 my-3">
+            <p className="mb-2 border-b-2 my-3 hover:bg-slate-400 hover:bg-opacity-5">
               <strong>Žanrid:</strong> {firstShow.Genres}
             </p>
-            <p className="mb-2 whitespace-pre-line my-4">
+            <p className="mb-2 whitespace-pre-line my-4 hover:bg-slate-400 hover:bg-opacity-5">
               <strong>Lühikirjeldus:</strong> {firstShow.Synopsis}
             </p>
           </div>
@@ -254,7 +257,9 @@ export default function OthersMovie(info: any) {
 
         <div className="grid md:grid-cols-1 gap-5">
           {data.map((show, index) => (
-            <div key={index} className="border border-gray-300 p-4 rounded-lg ">
+            <div
+              key={index}
+              className="border border-gray-300 p-4 rounded-lg hover:bg-slate-400 hover:bg-opacity-5">
               <p className="mb-2 border-spacing-3 border-b">
                 <strong>Esituse algus:</strong>
                 {formatDateTime(show.dttmShowStart)}
