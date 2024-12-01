@@ -12,6 +12,9 @@ import { getEstoniaSchedule } from "@/lib/movie-data/eesti";
 import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { formatDateTime } from "@/utils/utils";
+import { format } from "path";
 
 interface Data {
   dttmShowStart: string; // Date;
@@ -36,7 +39,7 @@ export default function OthersMovie(info: any) {
 
         const filteredEvents = eventData.filter(
           (event) =>
-            removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+            removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
         );
         setFirstShow(filteredEvents[0] || null);
       } catch (err) {
@@ -116,7 +119,7 @@ export default function OthersMovie(info: any) {
 
       if (info.city === "saaremaa") {
         const [dataThule, dataApollo] = await Promise.all(
-          getSaaremaaSchedule()
+          getSaaremaaSchedule(),
         );
         dataApollo.Shows.forEach((element) => {
           fetchedData.push({
@@ -186,7 +189,7 @@ export default function OthersMovie(info: any) {
       }
 
       const filteredShows = fetchedData.filter(
-        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie
+        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie,
       );
 
       setData(filteredShows);
@@ -199,59 +202,78 @@ export default function OthersMovie(info: any) {
   };
 
   return (
-    <div>
+    <div className="max-w-3xl mx-auto p-5">
       {firstShow && (
-        <div>
-          <p>
-            <strong>Title:</strong> {firstShow.Title}
-          </p>
-          <p>
-            <strong>Original Title:</strong> {firstShow.OriginalTitle}
-          </p>
-          <p>
-            <strong>Rating:</strong> {firstShow.Rating}
-          </p>
-          <p>
-            <strong>Genres:</strong> {firstShow.Genres}
-          </p>
-          <p>
-            <strong>Description:</strong> {firstShow.Synopsis}
-          </p>
+        <div className="flex flex-col border border-gray-300 rounded-lg p-7 mb-5 ">
           {firstShow.Images?.EventMediumImagePortrait && (
-            <img
-              src={firstShow.Images.EventMediumImagePortrait}
-              alt={firstShow.Title}
-              width="200"
-            />
+            <div className="w-full mb-5 justify-center justify-items-center">
+              <img
+                src={firstShow.Images.EventMediumImagePortrait}
+                alt={firstShow.Title}
+                className="w-full md:w-1/2 rounded-lg object-cover"
+              />
+              {/* md:w-1/2 -- Changes the width of the image */}
+            </div>
           )}
+
+          {/* <span className="text-justify text-lg"> */}
+          <div className="flex flex-col justify-between w-full">
+            <h1 className="mb-2 text-4xl px-1"> {firstShow.Title} </h1>
+            <p className="mb-2 translate-x-1 italic border-b-4 my-3">
+              {firstShow.OriginalTitle}
+            </p>
+
+            <p className="mb-2 border-b-2 my-3">
+              <strong>Vanusepiirang:</strong> {firstShow.Rating}
+            </p>
+            <p className="mb-2 border-b-2 my-3">
+              <strong>Žanrid:</strong> {firstShow.Genres}
+            </p>
+            <p className="mb-2 whitespace-pre-line my-4">
+              <strong>Lühikirjeldus:</strong> {firstShow.Synopsis}
+            </p>
+          </div>
+          {/* </span> */}
         </div>
       )}
-      <br />
-      <hr />
-      <h1>Linastuse ajad</h1>
 
-      {!data.length && !isLoading && !error && (
-        <button onClick={fetchFilteredShows}>Lae kava</button>
-      )}
+      <div className="flex flex-col border border-gray-300 rounded-lg p-7 mb-5 ">
+        <h1 className="text-2xl font-bold mb-5">Linastuse ajad</h1>
 
-      {isLoading && <p>Kava laadimine...</p>}
+        {!data.length && !isLoading && !error && (
+          <Button className="px-4 py-2 transition" onClick={fetchFilteredShows}>
+            Kuva kava
+          </Button>
+        )}
 
-      {error && <p>{error}</p>}
+        {isLoading && (
+          <h1 className="text-gray-400 animate-bounce">Kava laadimine...</h1>
+        )}
 
-      {data.map((show, index) => (
-        <div key={index}>
-          <p>
-            <strong>Show Time:</strong> {show.dttmShowStart}
-          </p>
-          <p>
-            <strong>Auditorium:</strong> {show.TheatreAuditorium}
-          </p>
-          <p>
-            <strong>Location:</strong> {show.Theatre}
-          </p>
-          <Link href={show.ShowURL}>{show.ShowURL}</Link>
+        {error && <p className="text-red-500">{error}</p>}
+
+        <div className="grid md:grid-cols-1 gap-5">
+          {data.map((show, index) => (
+            <div key={index} className="border border-gray-300 p-4 rounded-lg ">
+              <p className="mb-2 border-spacing-3 border-b">
+                <strong>Esituse algus:</strong>
+                {formatDateTime(show.dttmShowStart)}
+              </p>
+              <p className="mb-2 border-spacing-3 border-b">
+                <strong>Auditoorium:</strong> {show.TheatreAuditorium}
+              </p>
+              <p className="mb-2 border-spacing-3 border-b">
+                <strong>Asukoht:</strong> {show.Theatre}
+              </p>
+              <Link
+                href={show.ShowURL}
+                className="text-blue-500 hover:underline">
+                {show.ShowURL}
+              </Link>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
