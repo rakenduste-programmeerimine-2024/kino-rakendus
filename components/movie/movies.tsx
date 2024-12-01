@@ -46,9 +46,7 @@ export default function OthersMovie(info: any) {
     };
 
     preloadFirstShow();
-  }, [info.movie]);
-
-  const fetchFilteredShows = async () => {
+  }, [info.movie]);     
     setIsLoading(true);
     setError(null);
 
@@ -250,6 +248,7 @@ export default function OthersMovie(info: any) {
             <strong>Location:</strong> {show.Theatre}
           </p>
           <Link href={show.ShowURL}>{show.ShowURL}</Link>
+          <hr />
         </div>
       ))}
     </div>
