@@ -8,16 +8,16 @@ export default async function Index({
 }) {
   const { city, movie } = await params;
 
-  if (city == "search") {
+  if (city === "search") {
     return (
       <>
-        <SearchResult movie={movie} />;
+        <SearchResult movie={movie} />
       </>
     );
   } else {
     return (
       <>
-        <Movie movie={movie} city={city} />;
+        <Movie movie={movie} city={city} />
       </>
     );
   }
