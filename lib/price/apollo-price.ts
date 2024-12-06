@@ -4,7 +4,7 @@ import { Show } from "../movie-data/cinemas/apollo-types";
 
 
 export default function apolloPriceCalculation(show: Show):string{
-    //const supabase = createClient();
+    const supabase = createClient();
     let price: string = "tekst";
     return price
 }
