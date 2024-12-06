@@ -9,6 +9,11 @@ import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
 import { getTartuSchedule } from "@/lib/movie-data/cities/tartu";
 import { getViljandiSchedule } from "@/lib/movie-data/cities/viljandi";
 import { getEstoniaSchedule } from "@/lib/movie-data/eesti";
+import apolloPriceCalculation from "@/lib/price/apollo-price";
+import priceCalculation from "@/lib/price/apollo-price";
+import artisPriceCalculation from "@/lib/price/artis-price";
+import thulePriceCalculation from "@/lib/price/thule-price";
+import viimsiPriceCalculation from "@/lib/price/viimsi-price";
 import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -20,6 +25,7 @@ interface Data {
   ShowURL: string;
   Theatre: string;
   TheatreAuditorium: string;
+  Price: string;
 }
 
 export default function OthersMovie(info: any) {
@@ -67,6 +73,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
           });
         });
         dataArtis.Shows.forEach((element) => {
@@ -77,6 +84,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: artisPriceCalculation(element),
           });
         });
         dataViimsi.Schedule.Shows.Show.forEach((element) => {
@@ -87,6 +95,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: viimsiPriceCalculation(element),
           });
         });
       }
@@ -110,6 +119,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
           });
         });
       }
@@ -126,6 +136,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
           });
         });
         dataThule.Schedule.Shows.Show.forEach((element) => {
@@ -136,6 +147,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: thulePriceCalculation(element),
           });
         });
       }
@@ -151,6 +163,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
           });
         });
         artisData.Shows.forEach((element) => {
@@ -161,6 +174,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: artisPriceCalculation(element),
           });
         });
         viimsiData.Schedule.Shows.Show.forEach((element) => {
@@ -171,6 +185,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: viimsiPriceCalculation(element),
           });
         });
         thuleData.Schedule.Shows.Show.forEach((element) => {
@@ -181,6 +196,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: thulePriceCalculation(element),
           });
         });
       }
@@ -203,19 +219,19 @@ export default function OthersMovie(info: any) {
       {firstShow && (
         <div>
           <p>
-            <strong>Title:</strong> {firstShow.Title}
+            <strong>Tiitel:</strong> {firstShow.Title}
           </p>
           <p>
-            <strong>Original Title:</strong> {firstShow.OriginalTitle}
+            <strong>Originaalne tiitel:</strong> {firstShow.OriginalTitle}
           </p>
           <p>
-            <strong>Rating:</strong> {firstShow.Rating}
+            <strong>Vanusepiirang:</strong> {firstShow.Rating}
           </p>
           <p>
-            <strong>Genres:</strong> {firstShow.Genres}
+            <strong>Zanrid:</strong> {firstShow.Genres}
           </p>
           <p>
-            <strong>Description:</strong> {firstShow.Synopsis}
+            <strong>Kirjeldus:</strong> {firstShow.Synopsis}
           </p>
           {firstShow.Images?.EventMediumImagePortrait && (
             <img
@@ -241,13 +257,16 @@ export default function OthersMovie(info: any) {
       {data.map((show, index) => (
         <div key={index}>
           <p>
-            <strong>Show Time:</strong> {show.dttmShowStart}
+            <strong>Linastuse algus:</strong> {show.dttmShowStart}
           </p>
           <p>
-            <strong>Auditorium:</strong> {show.TheatreAuditorium}
+            <strong>Saal:</strong> {show.TheatreAuditorium}
           </p>
           <p>
-            <strong>Location:</strong> {show.Theatre}
+            <strong>Asukoht: </strong> {show.Theatre}
+          </p>
+          <p>
+            <strong>Eeldatav hind: </strong> {show.Price}
           </p>
           <Link href={show.ShowURL}>{show.ShowURL}</Link>
           <hr />
