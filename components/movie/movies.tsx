@@ -46,7 +46,9 @@ export default function OthersMovie(info: any) {
     };
 
     preloadFirstShow();
-  }, [info.movie]);     
+  }, [info.movie]);
+
+  const fetchFilteredShows = async () => {
     setIsLoading(true);
     setError(null);
 
