@@ -13,7 +13,7 @@ export default async function Artis() {
           <div key={index}>
             {/*<h2>{event.Title}</h2>*/}
             <Link
-              href={`/eesti/${removeSpecialCharacters(event.OriginalTitle)}`}
+              href={`/schedule/eesti/${removeSpecialCharacters(event.OriginalTitle)}`}
             >
               {event.Title}
             </Link>

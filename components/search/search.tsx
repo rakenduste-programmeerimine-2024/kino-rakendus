@@ -11,7 +11,7 @@ const SearchComponent: React.FC = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (removeSpecialCharacters(query)) {
-      router.push(`/search/${removeSpecialCharacters(query)}`);
+      router.push(`/schedule/search/${removeSpecialCharacters(query)}`);
     }
   };
 
