@@ -2,8 +2,10 @@ import { Show } from "../movie-data/cinemas/apollo-types";
 import cocacolaPrice from "./apollo/cocacola-price";
 import kristiinePrice from "./apollo/kristiine-price";
 import narvaPrice from "./apollo/narva-price";
+import othersPrice from "./apollo/others";
 import solarisPrice from "./apollo/solaris-price";
 import tallinnPrice from "./apollo/tallinn-price";
+import tartuparnuPrice from "./apollo/tartu-parnu-price";
 
 
 
@@ -19,7 +21,7 @@ export default function apolloPriceCalculation(show: Show):string{
         price = tallinnPrice(show)
     } else if (show.TheatreID == 1023){
         price = cocacolaPrice(show)
-    } else if (show.TheatreID == ){
+    } else if (show.TheatreID == 1011 || 1014 || 1024 || 1002){
         price = tartuparnuPrice(show)
     } else{
         price = othersPrice(show)
