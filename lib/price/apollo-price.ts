@@ -17,11 +17,11 @@ export default function apolloPriceCalculation(show: Show):string{
         price = kristiinePrice(show)
     } else if (show.TheatreID == 1005){
         price = solarisPrice(show)
-    } else if (show.TheatreID == 1007 || 1017){
+    } else if (show.TheatreID == 1007 || show.TheatreID == 1017){
         price = tallinnPrice(show)
     } else if (show.TheatreID == 1023){
         price = cocacolaPrice(show)
-    } else if (show.TheatreID == 1011 || 1014 || 1024 || 1002){
+    } else if (show.TheatreID == 1011 || show.TheatreID == 1014 || show.TheatreID == 1024 || show.TheatreID == 1002){
         price = tartuparnuPrice(show)
     } else{
         price = othersPrice(show)
