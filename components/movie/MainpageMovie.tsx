@@ -2,6 +2,7 @@
 import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 export interface IMovie {
   OriginalTitle: string;
@@ -20,16 +21,24 @@ export default function MainPageMovie(movie: IMovie) {
       <div
         className="relative"
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}>
+        onMouseLeave={() => setIsHovered(false)}
+        style={{ zIndex: isHovered ? 50 : 0, transition: "z-index 0.3s" }}>
         <Link href={`/eesti/${removeSpecialCharacters(movie.OriginalTitle)}`}>
-          <img
+          <motion.img
             src={movie.EventMediumImagePortrait}
             alt={movie.Title}
-            className="w-full h-auto md:h-auto rounded-sm"
+            className="w-full h-auto md:h-auto rounded-sm hover:z-50"
+            whileHover={{ scale: 1.01 }}
+            transition={{ duration: 0.3 }}
           />
         </Link>
         {isHovered && (
-          <div className="absolute w-full left-1/2 top-1/2 transform -translate-y-1/2 flex flex-col items-center justify-center bg-black bg-opacity-90 text-white p-4 z-50 rounded-md">
+          <motion.div
+            className="absolute w-full left-3/4 top-1/3 transform -translate-y-1/2 flex flex-col items-center justify-center bg-black bg-opacity-90 text-white p-4 z-50 rounded-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}>
             <Link
               href={`/eesti/${removeSpecialCharacters(movie.OriginalTitle)}`}>
               <h2 className="text-xl font-bold">{movie.Title}</h2>
@@ -38,7 +47,7 @@ export default function MainPageMovie(movie: IMovie) {
             <p className="text-sm">Vanus: {movie.Rating}</p>
             <p className="text-sm">Žanr: {movie.Genres}</p>
             <p className="mt-2">{movie.ShortSynopsis}</p>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
