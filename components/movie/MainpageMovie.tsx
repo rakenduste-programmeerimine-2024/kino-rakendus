@@ -29,6 +29,7 @@ export default function MainPageMovie(movie: IMovie) {
             alt={movie.Title}
             className="w-full h-auto md:h-auto rounded-sm hover:z-50"
             whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98, rotate: 0.45 }}
             transition={{ duration: 0.3 }}
           />
         </Link>
@@ -36,7 +37,7 @@ export default function MainPageMovie(movie: IMovie) {
           <motion.div
             className="absolute w-full left-3/4 top-1/3 transform -translate-y-1/2 flex flex-col items-center justify-center bg-black bg-opacity-90 text-white p-4 z-50 rounded-md"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: 1, x: -20, y: -100 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}>
             <Link
