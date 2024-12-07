@@ -28,7 +28,7 @@ interface Data {
   ShowURL: string;
   Theatre: string;
   TheatreAuditorium: string;
-  Price: number;
+  Price: string;
 }
 
 export default function OthersMovie(info: any) {
@@ -301,8 +301,7 @@ export default function OthersMovie(info: any) {
             <strong>Asukoht: </strong> {show.Theatre}
           </p>
           <p>
-            <strong>Eeldatav hind: </strong> {show.Price}{" "}
-            <strong> eurot</strong>
+            <strong>Eeldatav hind: </strong> {show.Price}
           </p>
           <Link href={show.ShowURL}>{show.ShowURL}</Link>
           <hr />

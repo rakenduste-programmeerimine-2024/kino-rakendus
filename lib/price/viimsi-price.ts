@@ -1,8 +1,7 @@
 import { Show } from "../movie-data/cinemas/viimsi-types";
 
-export default function viimsiPriceCalculation(show: Show):number{
-    
-    let price: number = 0;
+export default function viimsiPriceCalculation(show: Show):string{
+    let price: number = -1;
     const dateTime = new Date(show.dttmShowStart);
     if(show.PresentationMethod == "2D"){
         if(dateTime.getDay() == 0){
@@ -25,6 +24,8 @@ export default function viimsiPriceCalculation(show: Show):number{
             price = 11
         }
     }
-    
-    return price
+    if(price == -1){
+        return "Hinda ei leitud"
+    }
+    return price + " €"
 }

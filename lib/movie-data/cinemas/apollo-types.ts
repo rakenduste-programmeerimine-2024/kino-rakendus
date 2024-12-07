@@ -75,6 +75,7 @@ export interface Images {
 export enum PresentationMethod {
   Plf = "PLF",
   The2D = "2D",
+  The3D = "3D"
 }
 
 export enum Rating {
