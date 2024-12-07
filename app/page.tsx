@@ -46,7 +46,7 @@ export default async function Index() {
   return (
     <>
       <SearchComponent />
-      <main className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4">
+      <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {allMovies.map((movie, index) => (
           <MainPageMovie key={index} {...movie} />
         ))}
