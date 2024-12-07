@@ -1,4 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
 import { Show } from "../movie-data/cinemas/apollo-types";
 
 
