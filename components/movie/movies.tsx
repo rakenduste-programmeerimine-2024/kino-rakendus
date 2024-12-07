@@ -10,11 +10,11 @@ import { getTartuSchedule } from "@/lib/movie-data/cities/tartu";
 import { getViljandiSchedule } from "@/lib/movie-data/cities/viljandi";
 import { getEstoniaSchedule } from "@/lib/movie-data/eesti";
 import apolloPriceCalculation from "@/lib/price/apollo-price";
-import priceCalculation from "@/lib/price/apollo-price";
 import artisPriceCalculation from "@/lib/price/artis-price";
 import thulePriceCalculation from "@/lib/price/thule-price";
 import viimsiPriceCalculation from "@/lib/price/viimsi-price";
 import { removeSpecialCharacters } from "@/lib/utils";
+import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -61,7 +61,10 @@ export default function OthersMovie(info: any) {
     try {
       const decodedMovie = decodeURIComponent(info.movie);
       let fetchedData: Data[] = [];
-
+      const supabase = createClient();
+      let supabaseData = await supabase.from("membership").select("*");
+      //console.log(supabaseData);
+      //let holidayDates = await getHolidays();
       if (info.city === "tallinn") {
         const [dataApollo, dataArtis, dataViimsi] =
           await Promise.all(getTallinnSchedule());
@@ -100,7 +103,6 @@ export default function OthersMovie(info: any) {
         });
       }
 
-      // Handle other cities
       const cityScheduleFetchers = {
         narva: getNarvaSchedule,
         tartu: getTartuSchedule,

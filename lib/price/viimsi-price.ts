@@ -1,7 +1,7 @@
 import { Show } from "../movie-data/cinemas/viimsi-types";
 
-export default function viimsiPriceCalculation(show: Show):string{
+export default function viimsiPriceCalculation(show: Show):number{
     
-    let price: string = "";
+    let price: number = 0;
     return price
 }
