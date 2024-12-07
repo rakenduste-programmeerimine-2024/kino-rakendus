@@ -1,8 +1,8 @@
 import { Show } from "../movie-data/cinemas/thule-types";
 
-export default function thulePriceCalculation(show: Show):number{
+export default function thulePriceCalculation(show: Show):string{
     //const [date, time] = show.dttmShowStart.split('T')
-    let price: number = 0;
+    let price: number = -1;
     const dateTime = new Date(show.dttmShowStart);
     if(dateTime.getDay() == 0 || dateTime.getDay() == 6){
         price = 7
@@ -13,5 +13,8 @@ export default function thulePriceCalculation(show: Show):number{
     } else {
         price = 7
     }
-    return price
+    if(price == -1){
+        return "Hinda ei leitud"
+    }
+    return price + " €"
 }
