@@ -15,7 +15,7 @@ export default function cocacolaPrice(show: Show):number{
     if(show.PresentationMethod == "3D"){
         price += 1
     }
-    if(show.TheatreAuditorium == "5. lukssaal" || "4. lukssaal" || "3. lukssaal" || "1. lukssaal"){
+    if(show.TheatreAuditorium == "5. lukssaal" || show.TheatreAuditorium == "4. lukssaal" || show.TheatreAuditorium == "3. lukssaal" || show.TheatreAuditorium == "1. lukssaal"){
         price += 3
     }else if(show.TheatreAuditorium == "A.Le Coq Sviit"){
         price += 9
