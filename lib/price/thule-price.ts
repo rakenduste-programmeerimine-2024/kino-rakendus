@@ -8,7 +8,7 @@ export default function thulePriceCalculation(show: Show):number{
         price = 7
     } else if(dateTime.getDay() == 4){
         price = 4.50
-    } else if(dateTime.getDay() <= 3 && dateTime.getHours() <= 17){
+    } else if(dateTime.getDay() <= 4 && dateTime.getHours() <= 17){
         price = 5.50
     } else {
         price = 7
