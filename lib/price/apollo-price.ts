@@ -11,17 +11,17 @@ import tartuparnuPrice from "./apollo/tartu-parnu-price";
 
 export default function apolloPriceCalculation(show: Show):string{
     let price: number = -1;
-    if(show.TheatreID == 1008){
+    if(show.Theatre == "Apollo Kino Astri"){
         price = narvaPrice(show)
-    } else if (show.TheatreID == 1013){
+    } else if (show.Theatre == "Apollo Kino Kristiine"){
         price = kristiinePrice(show)
-    } else if (show.TheatreID == 1005){
+    } else if (show.Theatre == "Apollo Kino Solaris"){
         price = solarisPrice(show)
-    } else if (show.TheatreID == 1007 || show.TheatreID == 1017){
+    } else if (show.Theatre == "Apollo Kino Mustamäe" || show.Theatre == "Apollo Kino Ülemiste"){
         price = tallinnPrice(show)
-    } else if (show.TheatreID == 1023){
+    } else if (show.Theatre == "Apollo Kino Coca-Cola Plaza"){
         price = cocacolaPrice(show)
-    } else if (show.TheatreID == 1011 || show.TheatreID == 1014 || show.TheatreID == 1024 || show.TheatreID == 1002){
+    } else if (show.Theatre == "Apollo Kino Lõunakeskus" || show.Theatre == "Apollo Kino Eeden" || show.Theatre == "Apollo Kino Tasku" || show.Theatre == "Apollo Kino Pärnu"){
         price = tartuparnuPrice(show)
     } else{
         price = othersPrice(show)
