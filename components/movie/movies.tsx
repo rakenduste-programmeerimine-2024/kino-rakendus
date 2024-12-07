@@ -1,6 +1,9 @@
 "use client";
 
 import { getApolloEvents } from "@/lib/event-data/cinemas/apollo-events";
+import { getArtisEvents } from "@/lib/event-data/cinemas/artis-events";
+import { getThuleEvents } from "@/lib/event-data/cinemas/thule-events";
+import { getViimsiEvents } from "@/lib/event-data/cinemas/viimsi-events";
 import { getJohviSchedule } from "@/lib/movie-data/cities/johvi";
 import { getNarvaSchedule } from "@/lib/movie-data/cities/narva";
 import { getParnuSchedule } from "@/lib/movie-data/cities/parnu";
@@ -38,12 +41,33 @@ export default function OthersMovie(info: any) {
     const preloadFirstShow = async () => {
       try {
         const decodedMovie = decodeURIComponent(info.movie);
-        const eventData = await getApolloEvents();
-
-        const filteredEvents = eventData.filter(
+        let eventData = await getApolloEvents();
+        let filteredEvents = eventData.filter(
           (event) =>
             removeSpecialCharacters(event.OriginalTitle) === decodedMovie
         );
+        if (!filteredEvents[0]) {
+          eventData = await getArtisEvents();
+          filteredEvents = eventData.filter(
+            (event) =>
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+          );
+        }
+        if (!filteredEvents[0]) {
+          eventData = (await getViimsiEvents()).Events.Event;
+          filteredEvents = eventData.filter(
+            (event) =>
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+          );
+        }
+        if (!filteredEvents[0]) {
+          eventData = (await getThuleEvents()).Events.Event;
+          filteredEvents = eventData.filter(
+            (event) =>
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+          );
+        }
+
         setFirstShow(filteredEvents[0] || null);
       } catch (err) {
         console.error("Error preloading first show data:", err);
