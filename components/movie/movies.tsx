@@ -301,7 +301,7 @@ export default function OthersMovie(info: any) {
             <strong>Asukoht: </strong> {show.Theatre}
           </p>
           <p>
-            <strong>Eeldatav hind: </strong> {show.Price}
+            <strong>Eeldatav tavatooli hind: </strong> {show.Price}
           </p>
           <Link href={show.ShowURL}>{show.ShowURL}</Link>
           <hr />
