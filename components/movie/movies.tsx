@@ -185,6 +185,7 @@ export default function OthersMovie(info: any) {
       if (!info.city || info.city === "eesti") {
         const [apolloData, artisData, viimsiData, thuleData] =
           await Promise.all(getEstoniaSchedule());
+        console.time("AAAA");
         apolloData.Shows.forEach((element) => {
           fetchedData.push({
             dttmShowStart: element.dttmShowStart,
@@ -229,6 +230,7 @@ export default function OthersMovie(info: any) {
             Price: thulePriceCalculation(element),
           });
         });
+        console.timeEnd("AAAA");
       }
 
       const filteredShows = fetchedData.filter(

@@ -11,6 +11,7 @@ import tartuparnuPrice from "./apollo/tartu-parnu-price";
 
 export default function apolloPriceCalculation(show: Show):string{
     let price: number = -1;
+    console.log(show.TheatreID)
     if(show.TheatreID == 1008){
         price = narvaPrice(show)
     } else if (show.TheatreID == 1013){
