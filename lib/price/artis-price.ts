@@ -9,9 +9,9 @@ export default function artisPriceCalculation(show: Show):number{
     const dateTime = new Date(show.dttmShowStart);
     if(dateTime.getDay() == 0){
         price = 9.90
-    } else if(dateTime.getDay() <= 4 && dateTime.getHours() <= 17){
+    } else if(dateTime.getDay() <= 5 && dateTime.getHours() <= 17){
         price = 7
-    } else if(dateTime.getDay() <= 3 && dateTime.getHours() > 17){
+    } else if(dateTime.getDay() <= 4 && dateTime.getHours() > 17){
         price = 8.20
     } else {
         price = 9.90

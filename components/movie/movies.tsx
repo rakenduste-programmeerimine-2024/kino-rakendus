@@ -35,6 +35,7 @@ export default function OthersMovie(info: any) {
   const [firstShow, setFirstShow] = useState<any>(null);
   const [data, setData] = useState<Data[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasFetched, setHasFetched] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -81,14 +82,17 @@ export default function OthersMovie(info: any) {
   const fetchFilteredShows = async () => {
     setIsLoading(true);
     setError(null);
+    setHasFetched(false);
 
     try {
       const decodedMovie = decodeURIComponent(info.movie);
       let fetchedData: Data[] = [];
       const supabase = createClient();
-      let supabaseData = await supabase.from("membership").select("*");
       //console.log(supabaseData);
       //let holidayDates = await getHolidays();
+      const userData = await supabase.auth.getUser();
+      console.log(userData);
+      let supabaseData = await supabase.from("user_membership").select("*");
       if (info.city === "tallinn") {
         const [dataApollo, dataArtis, dataViimsi] =
           await Promise.all(getTallinnSchedule());
@@ -237,6 +241,7 @@ export default function OthersMovie(info: any) {
       setError("Failed to load schedule data. Please try again later.");
     } finally {
       setIsLoading(false);
+      setHasFetched(true);
     }
   };
 
@@ -279,6 +284,10 @@ export default function OthersMovie(info: any) {
       {isLoading && <p>Kava laadimine...</p>}
 
       {error && <p>{error}</p>}
+
+      {hasFetched && data.length === 0 && !isLoading && !error && (
+        <p>Lähima 30 päeva jooksul linastused puuduvad</p>
+      )}
 
       {data.map((show, index) => (
         <div key={index}>
