@@ -3,6 +3,7 @@ import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Event } from "@/lib/event-data/cinemas/event-types";
 
 export interface IMovie {
   OriginalTitle: string;
@@ -13,7 +14,7 @@ export interface IMovie {
   EventMediumImagePortrait: string;
 }
 
-export default function MainPageMovie(movie: IMovie) {
+export default function MainPageMovie(movie: Event) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -25,7 +26,7 @@ export default function MainPageMovie(movie: IMovie) {
         style={{ zIndex: isHovered ? 50 : 0, transition: "z-index 0.3s" }}>
         <Link href={`/eesti/${removeSpecialCharacters(movie.OriginalTitle)}`}>
           <motion.img
-            src={movie.EventMediumImagePortrait}
+            src={movie.Images.EventMediumImagePortrait}
             alt={movie.Title}
             className="w-full h-auto md:h-auto rounded-sm hover:z-50"
             whileHover={{ scale: 1.01 }}
@@ -35,7 +36,7 @@ export default function MainPageMovie(movie: IMovie) {
         </Link>
         {isHovered && (
           <motion.div
-            className="absolute w-full left-3/4 top-1/3 transform -translate-y-1/2 flex flex-col items-center justify-center bg-black bg-opacity-90 text-white p-4 z-50 rounded-md"
+            className="absolute w-full left-3/4 top-1/3 transform -translate-y-1/2 flex flex-col items-center justify-center bg-opacity-95 bg-zinc-900 text-white p-4 z-50 rounded-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, x: -20, y: -100 }}
             exit={{ opacity: 0 }}
