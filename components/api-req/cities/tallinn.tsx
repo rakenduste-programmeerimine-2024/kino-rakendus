@@ -1,7 +1,8 @@
 import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
-export default async function () {
+export default async function Tallinn() {
   try {
     const [dataApollo, dataArtis, dataViimsi] =
       await Promise.all(getTallinnSchedule());
@@ -12,7 +13,7 @@ export default async function () {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/tallinn/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
+              href={`/tallinn/${removeSpecialCharacters(show.OriginalTitle)}`}
             >
               {show.Title}
             </Link>
