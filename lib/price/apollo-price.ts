@@ -13,14 +13,18 @@ import tartuparnuPrice from "./apollo/tartu-parnu-price";
 
 export default function apolloPriceCalculation(show: Show, supabaseData: any):string{
     let price: number = -1;
-    console.log(supabaseData)
-    let age = ageCalculation(supabaseData[0].user_data.birth_date)
+    let age = 25
+    if (supabaseData){
+        let age = ageCalculation(supabaseData[0].user_data.birth_date)
+        supabaseData.forEach(element => {
+            if(element.membership_id == 1){
+                age = 15
+            }
+        });
+    }
+    
     const dateTime = new Date(show.dttmShowStart);
-    supabaseData.forEach(element => {
-        if(element.membership_id == 1){
-            age = 15
-        }
-    });
+    
 
     if(show.Theatre == "Apollo Kino Astri"){
         price = narvaPrice(show, age)
@@ -42,12 +46,14 @@ export default function apolloPriceCalculation(show: Show, supabaseData: any):st
         return "Hinda ei leitud"
     }
 
-    if(age > 12 && (!(dateTime.getDay() <= 5 && dateTime.getHours() < 17) || age < 65 || dateTime.getDay() == 0)){
-        supabaseData.forEach(element => {
-            if(element.membership_id == 4){
-                price = price * 0.9
-            }
-        });
+    if(supabaseData){
+        if(age > 12 && (!(dateTime.getDay() <= 5 && dateTime.getHours() < 17) || age < 65 || dateTime.getDay() == 0)){
+            supabaseData.forEach(element => {
+                if(element.membership_id == 4){
+                    price = price * 0.9
+                }
+            });
+        }
     }
     if(age <= 12){
         return Number(price.toFixed(2)) + " € (lastepilet)"
