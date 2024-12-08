@@ -13,23 +13,23 @@ function validateFormData(data: IFormValidationData): ValidationResult {
   let errorMessages: string[] = [];
 
   if (data.password !== data.confirmPassword) {
-    errorMessages.push("Passwords do not match");
+    errorMessages.push("Paroolid ei kattu");
   }
 
   if (!data.email || !data.password) {
-    errorMessages.push("Email and password are required");
+    errorMessages.push("Palun sisestage e-posti aadress ja parool");
   }
 
   if (!data.username) {
-    errorMessages.push("Username is required");
+    errorMessages.push("Palun sisestage kastutajanimi");
   }
 
   if (!data.birthDateStr) {
-    errorMessages.push("Date of birth is required");
+    errorMessages.push("Palun sisestage sünniaeg");
   }
 
   if (!data.firstName || !data.lastName) {
-    errorMessages.push("Please enter your first and last name");
+    errorMessages.push("Palun sisestage ees- ja perekonnanimi");
   }
 
   // If there are any errors, the validations success is false
@@ -135,15 +135,19 @@ export const signUpAction = async (formData: FormData) => {
         console.error("Error inserting user data:", userAddError);
       }
 
-      return encodedRedirect("success", "/sign-up", "Thanks for signing up!");
+      return encodedRedirect("success", "/sign-up", "Olete registreeritud!");
     } else {
-      encodedRedirect("error", "/sign-up", "Something brokey");
+      encodedRedirect(
+        "error",
+        "/sign-up",
+        "Midagi läks katki, proovige uuesti.",
+      );
       throw new Error("Something went wrong. Please try again.");
     }
   } catch (error: any) {
     console.error(error.code + " " + error.message);
     if (error.message == "NEXT_REDIRECT") {
-      return encodedRedirect("success", "/sign-up", "Thanks for signing up!");
+      return encodedRedirect("success", "/sign-up", "Olete registreeritud!");
     }
     return encodedRedirect("error", "/sign-up", error.message);
   }
@@ -173,7 +177,11 @@ export const forgotPasswordAction = async (formData: FormData) => {
   const callbackUrl = formData.get("callbackUrl")?.toString();
 
   if (!email) {
-    return encodedRedirect("error", "/forgot-password", "Email is required");
+    return encodedRedirect(
+      "error",
+      "/forgot-password",
+      "Epostiaadress on vajalik.",
+    );
   }
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
