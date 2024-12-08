@@ -3,7 +3,7 @@
 import { Show } from "../movie-data/cinemas/artis-types";
 
 
-export default function artisPriceCalculation(show: Show):string{
+export default function artisPriceCalculation(show: Show, supabaseData: any):string{
     //const [date, time] = show.dttmShowStart.split('T')
     let price: number = -1;
     const dateTime = new Date(show.dttmShowStart);

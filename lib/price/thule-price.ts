@@ -1,6 +1,6 @@
 import { Show } from "../movie-data/cinemas/thule-types";
 
-export default function thulePriceCalculation(show: Show):string{
+export default function thulePriceCalculation(show: Show, supabaseData: any):string{
     //const [date, time] = show.dttmShowStart.split('T')
     let price: number = -1;
     const dateTime = new Date(show.dttmShowStart);

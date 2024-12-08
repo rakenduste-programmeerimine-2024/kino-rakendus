@@ -9,8 +9,10 @@ import tartuparnuPrice from "./apollo/tartu-parnu-price";
 
 
 
-export default function apolloPriceCalculation(show: Show):string{
+export default function apolloPriceCalculation(show: Show, supabaseData: any):string{
     let price: number = -1;
+    console.log(supabaseData)
+    console.log(supabaseData[0])
     if(show.Theatre == "Apollo Kino Astri"){
         price = narvaPrice(show)
     } else if (show.Theatre == "Apollo Kino Kristiine"){
@@ -29,5 +31,10 @@ export default function apolloPriceCalculation(show: Show):string{
     if(price == -1){
         return "Hinda ei leitud"
     }
-    return price + " €"
+    supabaseData.forEach(element => {
+        if(element.membership_id == 4){
+            price = price * 0.9
+        }
+    });
+    return Number(price.toFixed(2)) + " €"
 }

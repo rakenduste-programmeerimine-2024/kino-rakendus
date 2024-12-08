@@ -1,6 +1,6 @@
 import { Show } from "../movie-data/cinemas/viimsi-types";
 
-export default function viimsiPriceCalculation(show: Show):string{
+export default function viimsiPriceCalculation(show: Show, supabaseData: any):string{
     let price: number = -1;
     const dateTime = new Date(show.dttmShowStart);
     if(show.PresentationMethod == "2D"){
