@@ -2,6 +2,7 @@ import { getApolloEvents } from "@/lib/event-data/cinemas/apollo-events";
 import { getArtisEvents } from "@/lib/event-data/cinemas/artis-events";
 import { getThuleEvents } from "@/lib/event-data/cinemas/thule-events";
 import { getViimsiEvents } from "@/lib/event-data/cinemas/viimsi-events";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
 interface Data {
@@ -21,12 +22,7 @@ export default async function SearchResult(info: any) {
     const eventData = await getApolloEvents();
     eventData.forEach((event) => {
       if (
-        event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie) ||
-        event.Title.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie)
+        removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie)
       ) {
         data.push({
           Title: event.Title,
@@ -42,13 +38,7 @@ export default async function SearchResult(info: any) {
     const artisEventData = await getArtisEvents();
     artisEventData.forEach((event) => {
       if (
-
-        event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie) ||
-        event.Title.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie)
+        removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie)
       ) {
         data.push({
           Title: event.Title,
@@ -64,12 +54,7 @@ export default async function SearchResult(info: any) {
     const viimsiEventData = await getViimsiEvents();
     viimsiEventData.Events.Event.forEach((event) => {
       if (
-        event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie) ||
-        event.Title.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie)
+        removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie)
       ) {
         data.push({
           Title: event.Title,
@@ -85,12 +70,7 @@ export default async function SearchResult(info: any) {
     const thuleEventData = await getThuleEvents();
     thuleEventData.Events.Event.forEach((event) => {
       if (
-        event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie) ||
-        event.Title.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "")
-          .toLowerCase()
-          .includes(decodedMovie)
+        removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie)
       ) {
         data.push({
           Title: event.Title,
@@ -110,7 +90,7 @@ export default async function SearchResult(info: any) {
           <div key={index}>
             {/*<h2>{event.Title}</h2>*/}
             <Link
-              href={`/eesti/${event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
+              href={`/eesti/${removeSpecialCharacters(event.OriginalTitle)}`}
             >
               {event.Title}
             </Link>
