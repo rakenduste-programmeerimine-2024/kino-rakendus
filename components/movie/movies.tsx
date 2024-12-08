@@ -24,7 +24,6 @@ import { Button } from "../ui/button";
 import { formatDateTime } from "@/utils/utils";
 import { format } from "path";
 
-
 interface Data {
   dttmShowStart: string; // Date;
   Title: string;
@@ -49,27 +48,27 @@ export default function OthersMovie(info: any) {
         let eventData = await getApolloEvents();
         let filteredEvents = eventData.filter(
           (event) =>
-            removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+            removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
         );
         if (!filteredEvents[0]) {
           eventData = await getArtisEvents();
           filteredEvents = eventData.filter(
             (event) =>
-              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
           );
         }
         if (!filteredEvents[0]) {
           eventData = (await getViimsiEvents()).Events.Event;
           filteredEvents = eventData.filter(
             (event) =>
-              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
           );
         }
         if (!filteredEvents[0]) {
           eventData = (await getThuleEvents()).Events.Event;
           filteredEvents = eventData.filter(
             (event) =>
-              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
           );
         }
         setFirstShow(filteredEvents[0] || null);
@@ -135,7 +134,6 @@ export default function OthersMovie(info: any) {
         });
       }
 
-
       const cityScheduleFetchers = {
         narva: getNarvaSchedule,
         tartu: getTartuSchedule,
@@ -161,7 +159,7 @@ export default function OthersMovie(info: any) {
 
       if (info.city === "saaremaa") {
         const [dataThule, dataApollo] = await Promise.all(
-          getSaaremaaSchedule()
+          getSaaremaaSchedule(),
         );
         dataApollo.Shows.forEach((element) => {
           fetchedData.push({
@@ -237,7 +235,7 @@ export default function OthersMovie(info: any) {
       }
 
       const filteredShows = fetchedData.filter(
-        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie
+        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie,
       );
 
       setData(filteredShows);
@@ -271,7 +269,7 @@ export default function OthersMovie(info: any) {
             <h1 className="mb-2 text-4xl px-1 hover:bg-slate-400 hover:bg-opacity-5">
               {firstShow.Title}{" "}
             </h1>
-            <p className="mb-2 translate-x-1 italic border-b-4 my-3 hover:bg-slate-400 hover:bg-opacity-5">
+            <p className="mb-2 translate-x-1 italic border-b-4 my-2 hover:bg-slate-400 hover:bg-opacity-5">
               {firstShow.OriginalTitle}
             </p>
 
@@ -303,7 +301,7 @@ export default function OthersMovie(info: any) {
         )}
 
         {error && <p className="text-red-500">{error}</p>}
-        
+
         {hasFetched && data.length === 0 && !isLoading && !error && (
           <p>Lähima 30 päeva jooksul linastused puuduvad</p>
         )}
@@ -335,9 +333,6 @@ export default function OthersMovie(info: any) {
           ))}
         </div>
       </div>
-
-
-      
     </div>
   );
 }
