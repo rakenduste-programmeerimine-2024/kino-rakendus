@@ -1,4 +1,5 @@
 import { getThuleEvents } from "@/lib/event-data/cinemas/thule-events";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function Thule() {
@@ -10,7 +11,7 @@ export default async function Thule() {
         {data.Events.Event.map((event, index) => (
           <div key={index}>
             <Link
-              href={`/eesti/${event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
+              href={`/eesti/${removeSpecialCharacters(event.OriginalTitle)}`}
             >
               {event.Title}
             </Link>
