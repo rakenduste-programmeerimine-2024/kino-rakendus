@@ -59,6 +59,10 @@ export const signUpAction = async (formData: FormData) => {
     memberships.forEach((membership) => {
       membershipIDs.push(membership.id);
     });
+
+    if (membershipIDs.length === 0) {
+      membershipIDs.push(999);
+    }
   }
 
   const email = formData.get("email")?.toString();
