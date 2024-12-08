@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { removeSpecialCharacters } from "@/lib/utils";
 import { Button } from "../ui/button";
 
 const SearchComponent: React.FC = () => {
@@ -10,10 +11,8 @@ const SearchComponent: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.replace(/[\s:]+/g, "").toLowerCase()) {
-      router.push(`/search/${query.replace(/[\s:]+/g, "").toLowerCase()}`);
-
-    }
+    if (removeSpecialCharacters(query)) {
+      router.push(`/search/${removeSpecialCharacters(query)}`);
   };
 
   return (
@@ -22,12 +21,12 @@ const SearchComponent: React.FC = () => {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search..."
+        placeholder="Otsi filmi..."
         className="border rounded p-2 w-full"
       />
 
       <Button type="submit" className="ml-2 p-2">
-        Search
+        Otsi
       </Button>
 
     </form>
