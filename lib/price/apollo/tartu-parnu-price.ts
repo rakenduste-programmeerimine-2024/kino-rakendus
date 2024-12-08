@@ -35,6 +35,7 @@ export default function tartuparnuPrice(show: Show, age:number):number{
         } else {
             price = 9.99
         }
+
     }
     if(show.PresentationMethod == "3D"){
         price += 1

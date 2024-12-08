@@ -1,5 +1,6 @@
 import { Show } from "../../movie-data/cinemas/apollo-types";
 
+
 export default function cocacolaPrice(show: Show, age:number):number{
     let price: number = -1;
     const dateTime = new Date(show.dttmShowStart);
@@ -35,6 +36,7 @@ export default function cocacolaPrice(show: Show, age:number):number{
         } else {
             price = 9.99
         }
+
     }
     if(show.PresentationMethod == "3D"){
         price += 1

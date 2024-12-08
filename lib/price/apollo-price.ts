@@ -1,3 +1,4 @@
+
 import ageCalculation from "../age/age-calculation";
 import { Show } from "../movie-data/cinemas/apollo-types";
 import cocacolaPrice from "./apollo/cocacola-price";
@@ -35,10 +36,12 @@ export default function apolloPriceCalculation(show: Show, supabaseData: any):st
         price = tartuparnuPrice(show, age)
     } else{
         price = othersPrice(show, age)
+
     }
     if(price == -1){
         return "Hinda ei leitud"
     }
+
     if(age > 12 && (!(dateTime.getDay() <= 5 && dateTime.getHours() < 17) || age < 65 || dateTime.getDay() == 0)){
         supabaseData.forEach(element => {
             if(element.membership_id == 4){
@@ -56,4 +59,5 @@ export default function apolloPriceCalculation(show: Show, supabaseData: any):st
         return Number(price.toFixed(2)) + " € (pensionääri pilet)"
     }
     return Number(price.toFixed(2)) + " €"
+
 }

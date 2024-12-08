@@ -10,7 +10,6 @@ const urlApollo = "https://www.apollokino.ee/xml/Schedule?area=1004&nrOfDays=31"
 const urlArtis = "https://www.kino.ee/xml/Schedule?nrOfDays=31"
 const urlViimsi = "https://www.viimsikino.ee/xml/Schedule?nrOfDays=31"
 
-
 export function getTallinnSchedule(): [
     Promise<ApolloJSON>,
     Promise<ArtisJSON>,

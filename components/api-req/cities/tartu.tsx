@@ -11,7 +11,6 @@ export default async function Tartu() {
         <h1>Schedule</h1>
         {data.Shows.map((show, index) => (
           <div key={index}>
-            {/*<h2>{show.Title}</h2>*/}
             <Link
               href={`/tartu/${removeSpecialCharacters(show.OriginalTitle)}`}
             >

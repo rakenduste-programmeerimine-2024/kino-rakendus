@@ -1,3 +1,4 @@
+
 import ageCalculation from "../age/age-calculation";
 import { Show } from "../movie-data/cinemas/viimsi-types";
 
@@ -130,6 +131,7 @@ export default function viimsiPriceCalculation(show: Show, supabaseData: any):st
                     price = 11
                 }
             }
+
         }
     }
     if(price == -1){

@@ -1,5 +1,6 @@
 "use client"
 
+
 import ageCalculation from "../age/age-calculation";
 import { Show } from "../movie-data/cinemas/artis-types";
 
@@ -127,6 +128,7 @@ export default function artisPriceCalculation(show: Show, supabaseData: any):str
                 price = 8.90
             }  
         }
+
     }
     if(price == -1){
         return "Hinda ei leitud"

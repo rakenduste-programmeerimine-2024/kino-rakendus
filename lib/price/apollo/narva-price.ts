@@ -35,6 +35,7 @@ export default function narvaPrice(show: Show, age:number):number{
         } else {
             price = 8.54
         }
+
     }
     if(show.PresentationMethod == "3D"){
         price += 1

@@ -1,3 +1,4 @@
+
 import ageCalculation from "../age/age-calculation";
 import { Show } from "../movie-data/cinemas/thule-types";
 
@@ -60,6 +61,7 @@ export default function thulePriceCalculation(show: Show, supabaseData: any):str
             price -= 2
         }
     });
+
     if(price == -1){
         return "Hinda ei leitud"
     }
