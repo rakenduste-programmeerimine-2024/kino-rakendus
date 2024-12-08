@@ -1,4 +1,5 @@
 import { getSaaremaaSchedule } from "@/lib/movie-data/cities/saaremaa";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function Saaremaa() {
@@ -11,7 +12,7 @@ export default async function Saaremaa() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/saaremaa/${show.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
+              href={`/saaremaa/${removeSpecialCharacters(show.OriginalTitle)}`}
             >
               {show.Title}
             </Link>
