@@ -15,6 +15,15 @@ const endpoints = [
   "https://www.apollokino.ee/xml/Schedule?area=1025&nrOfDays=31"
 ]
 
-export function getApolloEventSchedule(params: string) {
-  return JSONFromURL<ApolloJSON>(url + params)
+export async function getApolloSchedule(): Promise<ApolloJSON> {
+  const fetchPromises = endpoints.map((endpoint) => JSONFromURL<ApolloJSON>(endpoint));
+  const results = await Promise.all(fetchPromises);
+  return mergeApolloJSON(...results);
+}
+
+function mergeApolloJSON(...responses: ApolloJSON[]): ApolloJSON {
+  return {
+    PubDate: responses[0]?.PubDate || new Date().toISOString(),
+    Shows: responses.flatMap((response) => response.Shows),
+  };
 }
