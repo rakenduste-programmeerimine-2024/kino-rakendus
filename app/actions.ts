@@ -9,7 +9,6 @@ import {
   ValidationResult,
 } from "@/components/signup/signUp.types";
 
-
 function validateFormData(data: IFormValidationData): ValidationResult {
   let errorMessages: string[] = [];
 
@@ -132,17 +131,16 @@ export const signUpAction = async (formData: FormData) => {
         console.error("Error inserting user data:", userAddError);
       }
 
-      return encodedRedirect(
-        "success",
-        "/sign-up",
-        "Thanks for signing up! Please check your email for a verification link.",
-      );
+      return encodedRedirect("success", "/sign-up", "Thanks for signing up!");
     } else {
       encodedRedirect("error", "/sign-up", "Something brokey");
       throw new Error("Something went wrong. Please try again.");
     }
   } catch (error: any) {
     console.error(error.code + " " + error.message);
+    if (error.message == "NEXT_REDIRECT") {
+      return encodedRedirect("success", "/sign-up", "Thanks for signing up!");
+    }
     return encodedRedirect("error", "/sign-up", error.message);
   }
 };
@@ -161,7 +159,7 @@ export const signInAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-in", error.message);
   }
 
-  return redirect("/protected");
+  return redirect("/");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
