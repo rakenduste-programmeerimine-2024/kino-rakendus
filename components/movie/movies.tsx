@@ -1,11 +1,9 @@
+"use client";
+
 import { getApolloEvents } from "@/lib/event-data/cinemas/apollo-events";
 import { getArtisEvents } from "@/lib/event-data/cinemas/artis-events";
 import { getThuleEvents } from "@/lib/event-data/cinemas/thule-events";
 import { getViimsiEvents } from "@/lib/event-data/cinemas/viimsi-events";
-import { getApolloEventSchedule } from "@/lib/movie-data/cinemas/apollo";
-import { getArtisEventSchedule } from "@/lib/movie-data/cinemas/artis";
-import { getThuleEventSchedule } from "@/lib/movie-data/cinemas/thule";
-import { getViimsiEventSchedule } from "@/lib/movie-data/cinemas/viimsi";
 import { getJohviSchedule } from "@/lib/movie-data/cities/johvi";
 import { getNarvaSchedule } from "@/lib/movie-data/cities/narva";
 import { getParnuSchedule } from "@/lib/movie-data/cities/parnu";
@@ -13,299 +11,302 @@ import { getSaaremaaSchedule } from "@/lib/movie-data/cities/saaremaa";
 import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
 import { getTartuSchedule } from "@/lib/movie-data/cities/tartu";
 import { getViljandiSchedule } from "@/lib/movie-data/cities/viljandi";
+import { getEstoniaSchedule } from "@/lib/movie-data/eesti";
+import apolloPriceCalculation from "@/lib/price/apollo-price";
+import artisPriceCalculation from "@/lib/price/artis-price";
+import thulePriceCalculation from "@/lib/price/thule-price";
+import viimsiPriceCalculation from "@/lib/price/viimsi-price";
+import { removeSpecialCharacters } from "@/lib/utils";
+import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface Data {
-  dttmShowStart: string; //Date;
+  dttmShowStart: string; // Date;
   Title: string;
   OriginalTitle: string;
   ShowURL: string;
   Theatre: string;
   TheatreAuditorium: string;
+  Price: string;
 }
 
-export default async function OthersMovie(info: any) {
-  const decodedMovie = decodeURIComponent(info.movie);
-  try {
-    let data: Data[] = [];
-    const eventData = await getApolloEvents();
-    if (info.city == "tallinn") {
-      const [dataApollo, dataArtis, dataViimsi] =
-        await Promise.all(getTallinnSchedule());
-      dataApollo.Shows.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-      dataArtis.Shows.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-      dataViimsi.Schedule.Shows.Show.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-    } else if (info.city == "narva") {
-      const initialData = await getNarvaSchedule();
-      initialData.Shows.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-    } else if (info.city == "tartu") {
-      const initialData = await getTartuSchedule();
-      initialData.Shows.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-    } else if (info.city == "johvi") {
-      const initialData = await getJohviSchedule();
-      initialData.Shows.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-    } else if (info.city == "parnu") {
-      const initialData = await getParnuSchedule();
-      initialData.Shows.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-    } else if (info.city == "viljandi") {
-      const initialData = await getViljandiSchedule();
-      initialData.Shows.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-    } else if (info.city == "saaremaa") {
-      const [dataThule, dataApollo] = await Promise.all(getSaaremaaSchedule());
-      dataApollo.Shows.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-      dataThule.Schedule.Shows.Show.forEach((element) => {
-        data.push({
-          dttmShowStart: element.dttmShowStart,
-          Title: element.Title,
-          OriginalTitle: element.OriginalTitle,
-          ShowURL: element.ShowURL,
-          Theatre: element.Theatre,
-          TheatreAuditorium: element.TheatreAuditorium,
-        });
-      });
-    } else {
-      for (const movie of eventData) {
-        if (
-          movie.OriginalTitle.replace(
-            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-            ""
-          ).toLowerCase() == decodedMovie
-        ) {
-          const apolloData = await getApolloEventSchedule(
-            "?nrOfDays=14&eventID=" + movie.ID
+export default function OthersMovie(info: any) {
+  const [firstShow, setFirstShow] = useState<any>(null);
+  const [data, setData] = useState<Data[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasFetched, setHasFetched] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const preloadFirstShow = async () => {
+      try {
+        const decodedMovie = decodeURIComponent(info.movie);
+        let eventData = await getApolloEvents();
+        let filteredEvents = eventData.filter(
+          (event) =>
+            removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+        );
+        if (!filteredEvents[0]) {
+          eventData = await getArtisEvents();
+          filteredEvents = eventData.filter(
+            (event) =>
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
           );
-          apolloData.Shows.forEach((element) => {
-            data.push({
-              dttmShowStart: element.dttmShowStart,
-              Title: element.Title,
-              OriginalTitle: element.OriginalTitle,
-              ShowURL: element.ShowURL,
-              Theatre: element.Theatre,
-              TheatreAuditorium: element.TheatreAuditorium,
-            });
-          });
         }
-      }
-      const artisEventData = await getArtisEvents();
-      for (const movie of artisEventData) {
-        if (
-          movie.OriginalTitle.replace(
-            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-            ""
-          ).toLowerCase() == decodedMovie
-        ) {
-          const artisData = await getArtisEventSchedule(
-            "?nrOfDays=14&eventID=" + movie.ID
+        if (!filteredEvents[0]) {
+          eventData = (await getViimsiEvents()).Events.Event;
+          filteredEvents = eventData.filter(
+            (event) =>
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
           );
-          artisData.Shows.forEach((element) => {
-            data.push({
-              dttmShowStart: element.dttmShowStart,
-              Title: element.Title,
-              OriginalTitle: element.OriginalTitle,
-              ShowURL: element.ShowURL,
-              Theatre: element.Theatre,
-              TheatreAuditorium: element.TheatreAuditorium,
-            });
-          });
         }
-      }
-      const viimsiEventData = await getViimsiEvents();
-      for (const movie of viimsiEventData.Events.Event) {
-        if (
-          movie.OriginalTitle.replace(
-            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-            ""
-          ).toLowerCase() == decodedMovie
-        ) {
-          const viimsiData = await getViimsiEventSchedule(
-            "?nrOfDays=14&eventID=" + movie.ID
+        if (!filteredEvents[0]) {
+          eventData = (await getThuleEvents()).Events.Event;
+          filteredEvents = eventData.filter(
+            (event) =>
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
           );
-          viimsiData.Schedule.Shows.Show.forEach((element) => {
-            data.push({
-              dttmShowStart: element.dttmShowStart,
-              Title: element.Title,
-              OriginalTitle: element.OriginalTitle,
-              ShowURL: element.ShowURL,
-              Theatre: element.Theatre,
-              TheatreAuditorium: element.TheatreAuditorium,
-            });
-          });
         }
+
+        setFirstShow(filteredEvents[0] || null);
+      } catch (err) {
+        console.error("Error preloading first show data:", err);
+        setError("Failed to preload first show data.");
       }
-      const thuleEventData = await getThuleEvents();
-      for (const movie of thuleEventData.Events.Event) {
-        if (
-          movie.OriginalTitle.replace(
-            /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-            ""
-          ).toLowerCase() == decodedMovie
-        ) {
-          const thuleData = await getThuleEventSchedule(
-            "?nrOfDays=14&eventID=" + movie.ID
-          );
-          thuleData.Schedule.Shows.Show.forEach((element) => {
-            data.push({
-              dttmShowStart: element.dttmShowStart,
-              Title: element.Title,
-              OriginalTitle: element.OriginalTitle,
-              ShowURL: element.ShowURL,
-              Theatre: element.Theatre,
-              TheatreAuditorium: element.TheatreAuditorium,
-            });
+    };
+
+    preloadFirstShow();
+  }, [info.movie]);
+
+  const fetchFilteredShows = async () => {
+    setIsLoading(true);
+    setError(null);
+    setHasFetched(false);
+
+    try {
+      const decodedMovie = decodeURIComponent(info.movie);
+      let fetchedData: Data[] = [];
+      const supabase = createClient();
+      //console.log(supabaseData);
+      //let holidayDates = await getHolidays();
+      const userData = await supabase.auth.getUser();
+      console.log(userData);
+      let supabaseData = await supabase.from("user_membership").select("*");
+      if (info.city === "tallinn") {
+        const [dataApollo, dataArtis, dataViimsi] =
+          await Promise.all(getTallinnSchedule());
+        dataApollo.Shows.forEach((element) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
           });
-        }
+        });
+        dataArtis.Shows.forEach((element) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: artisPriceCalculation(element),
+          });
+        });
+        dataViimsi.Schedule.Shows.Show.forEach((element) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: viimsiPriceCalculation(element),
+          });
+        });
       }
+
+      const cityScheduleFetchers = {
+        narva: getNarvaSchedule,
+        tartu: getTartuSchedule,
+        johvi: getJohviSchedule,
+        parnu: getParnuSchedule,
+        viljandi: getViljandiSchedule,
+      };
+
+      if (cityScheduleFetchers[info.city]) {
+        const citySchedule = await cityScheduleFetchers[info.city]();
+        citySchedule.Shows.forEach((element: any) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
+          });
+        });
+      }
+
+      if (info.city === "saaremaa") {
+        const [dataThule, dataApollo] = await Promise.all(
+          getSaaremaaSchedule()
+        );
+        dataApollo.Shows.forEach((element) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
+          });
+        });
+        dataThule.Schedule.Shows.Show.forEach((element) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: thulePriceCalculation(element),
+          });
+        });
+      }
+
+      if (!info.city || info.city === "eesti") {
+        const [apolloData, artisData, viimsiData, thuleData] =
+          await Promise.all(getEstoniaSchedule());
+        apolloData.Shows.forEach((element) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
+          });
+        });
+        artisData.Shows.forEach((element) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: artisPriceCalculation(element),
+          });
+        });
+        viimsiData.Schedule.Shows.Show.forEach((element) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: viimsiPriceCalculation(element),
+          });
+        });
+        thuleData.Schedule.Shows.Show.forEach((element) => {
+          fetchedData.push({
+            dttmShowStart: element.dttmShowStart,
+            Title: element.Title,
+            OriginalTitle: element.OriginalTitle,
+            ShowURL: element.ShowURL,
+            Theatre: element.Theatre,
+            TheatreAuditorium: element.TheatreAuditorium,
+            Price: thulePriceCalculation(element),
+          });
+        });
+      }
+
+      const filteredShows = fetchedData.filter(
+        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie
+      );
+
+      setData(filteredShows);
+    } catch (err) {
+      console.error("Error fetching schedule data:", err);
+      setError("Failed to load schedule data. Please try again later.");
+    } finally {
+      setIsLoading(false);
+      setHasFetched(true);
     }
+  };
 
-    const filteredShows = await data.filter(
-      (show) =>
-        show.OriginalTitle.replace(
-          /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-          ""
-        ).toLowerCase() == decodedMovie
-    );
-    const filteredEvents = await eventData.filter(
-      (event) =>
-        event.OriginalTitle.replace(
-          /[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g,
-          ""
-        ).toLowerCase() == decodedMovie
-    );
-    const firstShow = await filteredEvents[0];
+  return (
+    <div>
+      {firstShow && (
+        <div>
+          <p>
+            <strong>Tiitel:</strong> {firstShow.Title}
+          </p>
+          <p>
+            <strong>Originaalne tiitel:</strong> {firstShow.OriginalTitle}
+          </p>
+          <p>
+            <strong>Vanusepiirang:</strong> {firstShow.Rating}
+          </p>
+          <p>
+            <strong>Zanrid:</strong> {firstShow.Genres}
+          </p>
+          <p>
+            <strong>Kirjeldus:</strong> {firstShow.Synopsis}
+          </p>
+          {firstShow.Images?.EventMediumImagePortrait && (
+            <img
+              src={firstShow.Images.EventMediumImagePortrait}
+              alt={firstShow.Title}
+              width="200"
+            />
+          )}
+        </div>
+      )}
+      <br />
+      <hr />
+      <h1>Linastuse ajad</h1>
 
-    return (
-      <div>
-        {firstShow && (
-          <div>
-            <p>
-              <strong>Title:</strong> {firstShow.Title}
-            </p>
-            <p>
-              <strong>Original Title:</strong> {firstShow.OriginalTitle}
-            </p>
-            <p>
-              <strong>Rating:</strong> {firstShow.Rating}
-            </p>
-            <p>
-              <strong>Genres:</strong> {firstShow.Genres}
-            </p>
-            <p>
-              <strong>Description:</strong> {firstShow.Synopsis}
-            </p>
-            {firstShow.Images.EventMediumImagePortrait && (
-              <img
-                src={firstShow.Images.EventMediumImagePortrait}
-                alt={firstShow.Title}
-                width="200"
-              />
-            )}
-          </div>
-        )}
-        <br />
-        <hr />
-        <h1>Linastuse ajad</h1>
-        {filteredShows.map((show, index) => (
-          <div key={index}>
-            <p>
-              <strong>Show Time:</strong> {show.dttmShowStart}
-            </p>
-            <p>
-              <strong>Auditorium:</strong> {show.TheatreAuditorium}
-            </p>
-            <p>
-              <strong>Location:</strong> {show.Theatre}
-            </p>
-            {/*<p>
-              <strong>Link:</strong> {show.ShowURL}
-            </p>*/}
-            <Link href={show.ShowURL}>{show.ShowURL}</Link>
-          </div>
-        ))}
-      </div>
-    );
-  } catch (error) {
-    console.error("Error fetching schedule data:", error);
-    return <p>Error loading schedule data</p>;
-  }
+      {!data.length && !isLoading && !error && (
+        <button onClick={fetchFilteredShows}>Lae kava</button>
+      )}
+
+      {isLoading && <p>Kava laadimine...</p>}
+
+      {error && <p>{error}</p>}
+
+      {hasFetched && data.length === 0 && !isLoading && !error && (
+        <p>Lähima 30 päeva jooksul linastused puuduvad</p>
+      )}
+
+      {data.map((show, index) => (
+        <div key={index}>
+          <p>
+            <strong>Linastuse algus:</strong> {show.dttmShowStart}
+          </p>
+          <p>
+            <strong>Saal:</strong> {show.TheatreAuditorium}
+          </p>
+          <p>
+            <strong>Asukoht: </strong> {show.Theatre}
+          </p>
+          <p>
+            <strong>Eeldatav tavatooli hind: </strong> {show.Price}
+          </p>
+          <Link href={show.ShowURL}>{show.ShowURL}</Link>
+          <hr />
+        </div>
+      ))}
+    </div>
+  );
 }
