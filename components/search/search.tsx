@@ -13,10 +13,12 @@ const SearchComponent: React.FC = () => {
     e.preventDefault();
     if (removeSpecialCharacters(query)) {
       router.push(`/search/${removeSpecialCharacters(query)}`);
+    }
   };
-
   return (
-    <form onSubmit={handleSearch} className="flex items-center">
+    <form
+      onSubmit={handleSearch}
+      className="flex items-center w-full min-w-40">
       <input
         type="text"
         value={query}
@@ -25,10 +27,9 @@ const SearchComponent: React.FC = () => {
         className="border rounded p-2 w-full"
       />
 
-      <Button type="submit" className="ml-2 p-2">
+      <Button type="submit" className="ml-2 p-2 w-2/12 min-w-fit">
         Otsi
       </Button>
-
     </form>
   );
 };
