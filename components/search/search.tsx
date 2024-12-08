@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { removeSpecialCharacters } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 const SearchComponent: React.FC = () => {
   const [query, setQuery] = useState<string>("");
@@ -12,7 +13,6 @@ const SearchComponent: React.FC = () => {
     e.preventDefault();
     if (removeSpecialCharacters(query)) {
       router.push(`/search/${removeSpecialCharacters(query)}`);
-    }
   };
 
   return (
@@ -24,9 +24,11 @@ const SearchComponent: React.FC = () => {
         placeholder="Otsi filmi..."
         className="border rounded p-2 w-full"
       />
-      <button type="submit" className="ml-2 p-2 bg-blue-500 text-white rounded">
-        Search
-      </button>
+
+      <Button type="submit" className="ml-2 p-2">
+        Otsi
+      </Button>
+
     </form>
   );
 };

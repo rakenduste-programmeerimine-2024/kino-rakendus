@@ -2,7 +2,7 @@ import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
 import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
-export default async function () {
+export default async function Tallinn() {
   try {
     const [dataApollo, dataArtis, dataViimsi] =
       await Promise.all(getTallinnSchedule());

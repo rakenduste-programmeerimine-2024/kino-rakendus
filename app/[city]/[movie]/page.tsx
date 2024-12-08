@@ -12,6 +12,7 @@ export default async function Index({
     return (
       <>
         <SearchResult movie={movie} />
+
       </>
     );
   } else {

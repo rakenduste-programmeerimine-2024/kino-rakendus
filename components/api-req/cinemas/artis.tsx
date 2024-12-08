@@ -11,7 +11,6 @@ export default async function Artis() {
         <h1>Schedule</h1>
         {data.map((event, index) => (
           <div key={index}>
-            {/*<h2>{event.Title}</h2>*/}
             <Link
               href={`/eesti/${removeSpecialCharacters(event.OriginalTitle)}`}
             >

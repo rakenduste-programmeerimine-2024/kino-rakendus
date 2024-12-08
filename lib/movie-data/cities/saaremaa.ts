@@ -5,7 +5,6 @@ import { ApolloJSON } from "../cinemas/apollo-types"
 const urlThule = "https://pilet.thulekoda.ee/xml/Schedule?nrOfDays=31"
 const urlApollo = "https://www.apollokino.ee/xml/Schedule?area=1012&nrOfDays=31"
 
-
 export function getSaaremaaSchedule(): [
   Promise<ThuleXML>,
   Promise<ApolloJSON>] {

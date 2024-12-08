@@ -22,7 +22,6 @@ export default async function SearchResult(info: any) {
     const eventData = await getApolloEvents();
     eventData.forEach((event) => {
       if (
-        removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie) ||
         removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie)
       ) {
         data.push({
@@ -39,7 +38,6 @@ export default async function SearchResult(info: any) {
     const artisEventData = await getArtisEvents();
     artisEventData.forEach((event) => {
       if (
-        removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie) ||
         removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie)
       ) {
         data.push({
@@ -56,7 +54,6 @@ export default async function SearchResult(info: any) {
     const viimsiEventData = await getViimsiEvents();
     viimsiEventData.Events.Event.forEach((event) => {
       if (
-        removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie) ||
         removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie)
       ) {
         data.push({
@@ -73,7 +70,6 @@ export default async function SearchResult(info: any) {
     const thuleEventData = await getThuleEvents();
     thuleEventData.Events.Event.forEach((event) => {
       if (
-        removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie) ||
         removeSpecialCharacters(event.OriginalTitle).includes(decodedMovie)
       ) {
         data.push({

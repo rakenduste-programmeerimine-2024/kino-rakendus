@@ -12,7 +12,7 @@ export default async function Viljandi() {
           <div key={index}>
             {/*<h2>{show.Title}</h2>*/}
             <Link
-              href={`/tartu/${removeSpecialCharacters(show.OriginalTitle)}`}
+              href={`/viljandi/${removeSpecialCharacters(show.OriginalTitle)}`}
             >
               {show.Title}
             </Link>

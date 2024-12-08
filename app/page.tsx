@@ -1,3 +1,4 @@
+
 import { ApolloFormat } from "@/components/api-req/cinemas/ApolloFormat";
 import { ArtisFormat } from "@/components/api-req/cinemas/ArtisFormat";
 import { ThuleFormat } from "@/components/api-req/cinemas/ThuleFormat";
