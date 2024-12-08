@@ -27,61 +27,61 @@ export default function SignUpForm({
   return (
     <>
       <form className="flex flex-col min-w-64 max-w-64 mx-auto">
-        <h1 className="text-2xl font-medium">Sign up</h1>
+        <h1 className="text-2xl font-medium">Registreeri</h1>
         <p className="text-sm text text-foreground">
-          Already have an account?{" "}
+          Juba kasutaja?{" "}
           <Link className="text-primary font-medium underline" href="/sign-in">
-            Sign in
+            Logi sisse
           </Link>
         </p>
         <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
-          <Label htmlFor="username">Username</Label>
+          <Label htmlFor="username">Kasutajanimi</Label>
           <Input
             name="username"
             id="username"
-            placeholder="Username"
+            placeholder="Kasutajanimi"
             required
           />
           <Label htmlFor="email">Email</Label>
           <Input
             name="email"
             id="email"
-            placeholder="you@example.com"
+            placeholder="mina@midagi.com"
             required
           />
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Parool</Label>
           <Input
             type="password"
             name="password"
             id="password"
-            placeholder="Your password"
-            minLength={6}
+            placeholder="Sinu parool"
+            minLength={8}
             required
           />
-          <Label htmlFor="confirm-password">Confirm password</Label>
+          <Label htmlFor="confirm-password">Kinnita parool</Label>
           <Input
             type="password"
             name="confirm-password"
             id="confirm-password"
-            placeholder="Confirm your password"
-            minLength={6}
+            placeholder="Kinnita oma parool"
+            minLength={8}
             required
           />
-          <Label htmlFor="first-name">First name</Label>
+          <Label htmlFor="first-name">Eesnimi</Label>
           <Input
             name="first-name"
             id="first-name"
-            placeholder="First name"
+            placeholder="Eesnimi"
             required
           />{" "}
-          <Label htmlFor="last-name">Last name</Label>
+          <Label htmlFor="last-name">Perekonnanimi</Label>
           <Input
             name="last-name"
             id="last-name"
-            placeholder="Last name"
+            placeholder="Perekonnanimi"
             required
           />
-          <Label htmlFor="date-input">Date-of-birth</Label>
+          <Label htmlFor="date-input">Sünniaeg</Label>
           <Input name="date-input" id="date-input" type="date" required />
           <CinemaContext.Provider value={cinemas}>
             <MembershipContext.Provider value={memberships}>
@@ -102,7 +102,7 @@ export default function SignUpForm({
             value={parentCinema ? JSON.stringify(parentCinema) : ""}
           />
           <SubmitButton formAction={signUpAction} pendingText="Signing up...">
-            Sign up
+            Registreeri
           </SubmitButton>
         </div>
       </form>
