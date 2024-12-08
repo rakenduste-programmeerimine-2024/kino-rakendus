@@ -61,12 +61,12 @@ export default function MembershipDropdown({
               cinemas.find((cinemaItem) => cinemaItem.id === cinema.id)?.name,
           )
           .join(", ")
-      : "Select your membership(s)";
+      : "Vali oma liikmelisus(ed)";
 
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuLabel>Memberships</DropdownMenuLabel>
+        <DropdownMenuLabel>Liikmesused</DropdownMenuLabel>
         <DropdownMenuTrigger>{buttonText}</DropdownMenuTrigger>
         <DropdownMenuContent>
           {cinemas.map((cinema) => (
