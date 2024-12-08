@@ -1,6 +1,9 @@
 "use client";
 
 import { getApolloEvents } from "@/lib/event-data/cinemas/apollo-events";
+import { getArtisEvents } from "@/lib/event-data/cinemas/artis-events";
+import { getThuleEvents } from "@/lib/event-data/cinemas/thule-events";
+import { getViimsiEvents } from "@/lib/event-data/cinemas/viimsi-events";
 import { getJohviSchedule } from "@/lib/movie-data/cities/johvi";
 import { getNarvaSchedule } from "@/lib/movie-data/cities/narva";
 import { getParnuSchedule } from "@/lib/movie-data/cities/parnu";
@@ -9,12 +12,18 @@ import { getTallinnSchedule } from "@/lib/movie-data/cities/tallinn";
 import { getTartuSchedule } from "@/lib/movie-data/cities/tartu";
 import { getViljandiSchedule } from "@/lib/movie-data/cities/viljandi";
 import { getEstoniaSchedule } from "@/lib/movie-data/eesti";
+import apolloPriceCalculation from "@/lib/price/apollo-price";
+import artisPriceCalculation from "@/lib/price/artis-price";
+import thulePriceCalculation from "@/lib/price/thule-price";
+import viimsiPriceCalculation from "@/lib/price/viimsi-price";
 import { removeSpecialCharacters } from "@/lib/utils";
+import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { formatDateTime } from "@/utils/utils";
 import { format } from "path";
+
 
 interface Data {
   dttmShowStart: string; // Date;
@@ -23,24 +32,46 @@ interface Data {
   ShowURL: string;
   Theatre: string;
   TheatreAuditorium: string;
+  Price: string;
 }
 
 export default function OthersMovie(info: any) {
   const [firstShow, setFirstShow] = useState<any>(null);
   const [data, setData] = useState<Data[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasFetched, setHasFetched] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const preloadFirstShow = async () => {
       try {
         const decodedMovie = decodeURIComponent(info.movie);
-        const eventData = await getApolloEvents();
-
-        const filteredEvents = eventData.filter(
+        let eventData = await getApolloEvents();
+        let filteredEvents = eventData.filter(
           (event) =>
-            removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
+            removeSpecialCharacters(event.OriginalTitle) === decodedMovie
         );
+        if (!filteredEvents[0]) {
+          eventData = await getArtisEvents();
+          filteredEvents = eventData.filter(
+            (event) =>
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+          );
+        }
+        if (!filteredEvents[0]) {
+          eventData = (await getViimsiEvents()).Events.Event;
+          filteredEvents = eventData.filter(
+            (event) =>
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+          );
+        }
+        if (!filteredEvents[0]) {
+          eventData = (await getThuleEvents()).Events.Event;
+          filteredEvents = eventData.filter(
+            (event) =>
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+          );
+        }
         setFirstShow(filteredEvents[0] || null);
       } catch (err) {
         console.error("Error preloading first show data:", err);
@@ -54,11 +85,17 @@ export default function OthersMovie(info: any) {
   const fetchFilteredShows = async () => {
     setIsLoading(true);
     setError(null);
+    setHasFetched(false);
 
     try {
       const decodedMovie = decodeURIComponent(info.movie);
       let fetchedData: Data[] = [];
-
+      const supabase = createClient();
+      //console.log(supabaseData);
+      //let holidayDates = await getHolidays();
+      const userData = await supabase.auth.getUser();
+      console.log(userData);
+      let supabaseData = await supabase.from("user_membership").select("*");
       if (info.city === "tallinn") {
         const [dataApollo, dataArtis, dataViimsi] =
           await Promise.all(getTallinnSchedule());
@@ -70,6 +107,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
           });
         });
         dataArtis.Shows.forEach((element) => {
@@ -80,6 +118,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: artisPriceCalculation(element),
           });
         });
         dataViimsi.Schedule.Shows.Show.forEach((element) => {
@@ -90,11 +129,13 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+
+            Price: viimsiPriceCalculation(element),
           });
         });
       }
 
-      // Handle other cities
+
       const cityScheduleFetchers = {
         narva: getNarvaSchedule,
         tartu: getTartuSchedule,
@@ -113,13 +154,14 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
           });
         });
       }
 
       if (info.city === "saaremaa") {
         const [dataThule, dataApollo] = await Promise.all(
-          getSaaremaaSchedule(),
+          getSaaremaaSchedule()
         );
         dataApollo.Shows.forEach((element) => {
           fetchedData.push({
@@ -129,6 +171,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
           });
         });
         dataThule.Schedule.Shows.Show.forEach((element) => {
@@ -139,6 +182,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: thulePriceCalculation(element),
           });
         });
       }
@@ -154,6 +198,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: apolloPriceCalculation(element),
           });
         });
         artisData.Shows.forEach((element) => {
@@ -164,6 +209,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: artisPriceCalculation(element),
           });
         });
         viimsiData.Schedule.Shows.Show.forEach((element) => {
@@ -174,6 +220,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: viimsiPriceCalculation(element),
           });
         });
         thuleData.Schedule.Shows.Show.forEach((element) => {
@@ -184,12 +231,13 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+            Price: thulePriceCalculation(element),
           });
         });
       }
 
       const filteredShows = fetchedData.filter(
-        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie,
+        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie
       );
 
       setData(filteredShows);
@@ -198,6 +246,7 @@ export default function OthersMovie(info: any) {
       setError("Failed to load schedule data. Please try again later.");
     } finally {
       setIsLoading(false);
+      setHasFetched(true);
     }
   };
 
@@ -254,6 +303,10 @@ export default function OthersMovie(info: any) {
         )}
 
         {error && <p className="text-red-500">{error}</p>}
+        
+        {hasFetched && data.length === 0 && !isLoading && !error && (
+          <p>Lähima 30 päeva jooksul linastused puuduvad</p>
+        )}
 
         <div className="grid md:grid-cols-1 gap-5">
           {data.map((show, index) => (
@@ -270,6 +323,9 @@ export default function OthersMovie(info: any) {
               <p className="mb-2 border-spacing-3 border-b">
                 <strong>Asukoht:</strong> {show.Theatre}
               </p>
+              <p className="mb-2 border-spacing-3 border-b">
+                <strong>Eeldatav tavatooli hind: </strong> {show.Price}
+              </p>
               <Link
                 href={show.ShowURL}
                 className="text-blue-500 hover:underline">
@@ -279,6 +335,9 @@ export default function OthersMovie(info: any) {
           ))}
         </div>
       </div>
+
+
+      
     </div>
   );
 }
