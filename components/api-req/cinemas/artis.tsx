@@ -1,4 +1,5 @@
 import { getArtisEvents } from "@/lib/event-data/cinemas/artis-events";
+import { removeSpecialCharacters } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function Artis() {
@@ -11,7 +12,7 @@ export default async function Artis() {
         {data.map((event, index) => (
           <div key={index}>
             <Link
-              href={`/eesti/${event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
+              href={`/eesti/${removeSpecialCharacters(event.OriginalTitle)}`}
             >
               {event.Title}
             </Link>
