@@ -7,7 +7,7 @@ import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
 import SearchComponent from "@/components/search/search";
-import CityDropdown from "@/components/navbar/cityDropdown";
+import CityDropdown from "@/components/navbar/CityDropdown";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -52,9 +52,7 @@ export default function RootLayout({
                   </div>
                 </div>
               </nav>
-              <div className="flex flex-col gap-20 p-5">
-                {children}
-              </div>
+              <div className="flex flex-col gap-20 p-5">{children}</div>
 
               <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
                 <p>
