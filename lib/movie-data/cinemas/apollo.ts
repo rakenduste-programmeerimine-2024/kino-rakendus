@@ -21,6 +21,10 @@ export async function getApolloSchedule(): Promise<ApolloJSON> {
   return mergeApolloJSON(...results);
 }
 
+export function getApolloEventSchedule(params: string) {
+  return JSONFromURL<ApolloJSON>(url + params)
+}
+
 function mergeApolloJSON(...responses: ApolloJSON[]): ApolloJSON {
   return {
     PubDate: responses[0]?.PubDate || new Date().toISOString(),
