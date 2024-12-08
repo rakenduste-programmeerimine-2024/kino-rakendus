@@ -20,6 +20,9 @@ import { removeSpecialCharacters } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { formatDateTime } from "@/utils/utils";
+import { format } from "path";
 
 interface Data {
   dttmShowStart: string; // Date;
@@ -45,30 +48,29 @@ export default function OthersMovie(info: any) {
         let eventData = await getApolloEvents();
         let filteredEvents = eventData.filter(
           (event) =>
-            removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+            removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
         );
         if (!filteredEvents[0]) {
           eventData = await getArtisEvents();
           filteredEvents = eventData.filter(
             (event) =>
-              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
           );
         }
         if (!filteredEvents[0]) {
           eventData = (await getViimsiEvents()).Events.Event;
           filteredEvents = eventData.filter(
             (event) =>
-              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
           );
         }
         if (!filteredEvents[0]) {
           eventData = (await getThuleEvents()).Events.Event;
           filteredEvents = eventData.filter(
             (event) =>
-              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
           );
         }
-
         setFirstShow(filteredEvents[0] || null);
       } catch (err) {
         console.error("Error preloading first show data:", err);
@@ -126,6 +128,7 @@ export default function OthersMovie(info: any) {
             ShowURL: element.ShowURL,
             Theatre: element.Theatre,
             TheatreAuditorium: element.TheatreAuditorium,
+
             Price: viimsiPriceCalculation(element),
           });
         });
@@ -156,7 +159,7 @@ export default function OthersMovie(info: any) {
 
       if (info.city === "saaremaa") {
         const [dataThule, dataApollo] = await Promise.all(
-          getSaaremaaSchedule()
+          getSaaremaaSchedule(),
         );
         dataApollo.Shows.forEach((element) => {
           fetchedData.push({
@@ -232,7 +235,7 @@ export default function OthersMovie(info: any) {
       }
 
       const filteredShows = fetchedData.filter(
-        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie
+        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie,
       );
 
       setData(filteredShows);
@@ -246,67 +249,90 @@ export default function OthersMovie(info: any) {
   };
 
   return (
-    <div>
+    <div className="max-w-3xl mx-auto p-5">
       {firstShow && (
-        <div>
-          <p>
-            <strong>Tiitel:</strong> {firstShow.Title}
-          </p>
-          <p>
-            <strong>Originaalne tiitel:</strong> {firstShow.OriginalTitle}
-          </p>
-          <p>
-            <strong>Vanusepiirang:</strong> {firstShow.Rating}
-          </p>
-          <p>
-            <strong>Zanrid:</strong> {firstShow.Genres}
-          </p>
-          <p>
-            <strong>Kirjeldus:</strong> {firstShow.Synopsis}
-          </p>
+        <div className="flex flex-col border border-gray-300 rounded-lg p-7 mb-5">
           {firstShow.Images?.EventMediumImagePortrait && (
-            <img
-              src={firstShow.Images.EventMediumImagePortrait}
-              alt={firstShow.Title}
-              width="200"
-            />
+            <div className="w-full mb-5 justify-center justify-items-center">
+              <img
+                src={firstShow.Images.EventMediumImagePortrait}
+                alt={firstShow.Title}
+                className="w-full md:w-1/2 rounded-lg object-cover"
+              />
+              {/* md:w-1/2 -- Changes the width of the image, maybe needs to be adjusted. */}
+            </div>
           )}
+
+          {/* This will make the text more readable, at the cost of the page looking clunkier */}
+          {/* <span className="text-justify text-lg"> */}
+          <div className="flex flex-col justify-between w-full">
+            <h1 className="mb-2 text-4xl px-1 hover:bg-slate-400 hover:bg-opacity-5">
+              {firstShow.Title}{" "}
+            </h1>
+            <p className="mb-2 translate-x-1 italic border-b-4 my-2 hover:bg-slate-400 hover:bg-opacity-5">
+              {firstShow.OriginalTitle}
+            </p>
+
+            <p className="mb-2 border-b-2 my-3 hover:bg-slate-400 hover:bg-opacity-5">
+              <strong>Vanusepiirang:</strong> {firstShow.Rating}
+            </p>
+            <p className="mb-2 border-b-2 my-3 hover:bg-slate-400 hover:bg-opacity-5">
+              <strong>Žanrid:</strong> {firstShow.Genres}
+            </p>
+            <p className="mb-2 whitespace-pre-line my-4 hover:bg-slate-400 hover:bg-opacity-5">
+              <strong>Lühikirjeldus:</strong> {firstShow.Synopsis}
+            </p>
+          </div>
+          {/* </span> */}
         </div>
       )}
-      <br />
-      <hr />
-      <h1>Linastuse ajad</h1>
 
-      {!data.length && !isLoading && !error && (
-        <button onClick={fetchFilteredShows}>Lae kava</button>
-      )}
+      <div className="flex flex-col border border-gray-300 rounded-lg p-7 mb-5 ">
+        <h1 className="text-2xl font-bold mb-5">Linastuse ajad</h1>
 
-      {isLoading && <p>Kava laadimine...</p>}
+        {!data.length && !isLoading && !error && (
+          <Button className="px-4 py-2 transition" onClick={fetchFilteredShows}>
+            Kuva kava
+          </Button>
+        )}
 
-      {error && <p>{error}</p>}
+        {isLoading && (
+          <h1 className="text-gray-400 animate-bounce">Kava laadimine...</h1>
+        )}
 
-      {hasFetched && data.length === 0 && !isLoading && !error && (
-        <p>Lähima 30 päeva jooksul linastused puuduvad</p>
-      )}
+        {error && <p className="text-red-500">{error}</p>}
 
-      {data.map((show, index) => (
-        <div key={index}>
-          <p>
-            <strong>Linastuse algus:</strong> {show.dttmShowStart}
-          </p>
-          <p>
-            <strong>Saal:</strong> {show.TheatreAuditorium}
-          </p>
-          <p>
-            <strong>Asukoht: </strong> {show.Theatre}
-          </p>
-          <p>
-            <strong>Eeldatav tavatooli hind: </strong> {show.Price}
-          </p>
-          <Link href={show.ShowURL}>{show.ShowURL}</Link>
-          <hr />
+        {hasFetched && data.length === 0 && !isLoading && !error && (
+          <p>Lähima 30 päeva jooksul linastused puuduvad</p>
+        )}
+
+        <div className="grid md:grid-cols-1 gap-5">
+          {data.map((show, index) => (
+            <div
+              key={index}
+              className="border border-gray-300 p-4 rounded-lg hover:bg-slate-400 hover:bg-opacity-5">
+              <p className="mb-2 border-spacing-3 border-b">
+                <strong>Esituse algus:</strong>
+                {formatDateTime(show.dttmShowStart)}
+              </p>
+              <p className="mb-2 border-spacing-3 border-b">
+                <strong>Auditoorium:</strong> {show.TheatreAuditorium}
+              </p>
+              <p className="mb-2 border-spacing-3 border-b">
+                <strong>Asukoht:</strong> {show.Theatre}
+              </p>
+              <p className="mb-2 border-spacing-3 border-b">
+                <strong>Eeldatav tavatooli hind: </strong> {show.Price}
+              </p>
+              <Link
+                href={show.ShowURL}
+                className="text-blue-500 hover:underline">
+                {show.ShowURL}
+              </Link>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
