@@ -1,6 +1,6 @@
 CREATE TYPE membership_name AS ENUM (
-  '25. > Piletit',
-  '> 25. Piletit',
+  'Apollo klubi liige',
+  'Tudeng',
   'Filmisõber',
   'Filmifänn',
   'Filmifriik',

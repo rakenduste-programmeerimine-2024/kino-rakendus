@@ -20,9 +20,11 @@ import { removeSpecialCharacters } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
 import { Button } from "../ui/button";
 import { formatDateTime } from "@/utils/utils";
 import { format } from "path";
+
 
 interface Data {
   dttmShowStart: string; // Date;
@@ -48,27 +50,33 @@ export default function OthersMovie(info: any) {
         let eventData = await getApolloEvents();
         let filteredEvents = eventData.filter(
           (event) =>
-            removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
+            removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+
         );
         if (!filteredEvents[0]) {
           eventData = await getArtisEvents();
           filteredEvents = eventData.filter(
             (event) =>
-              removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
+
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+
           );
         }
         if (!filteredEvents[0]) {
           eventData = (await getViimsiEvents()).Events.Event;
           filteredEvents = eventData.filter(
             (event) =>
-              removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
+
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
+
           );
         }
         if (!filteredEvents[0]) {
           eventData = (await getThuleEvents()).Events.Event;
           filteredEvents = eventData.filter(
             (event) =>
-              removeSpecialCharacters(event.OriginalTitle) === decodedMovie,
+
+              removeSpecialCharacters(event.OriginalTitle) === decodedMovie
           );
         }
         setFirstShow(filteredEvents[0] || null);
@@ -94,43 +102,67 @@ export default function OthersMovie(info: any) {
       //let holidayDates = await getHolidays();
       const userData = await supabase.auth.getUser();
       console.log(userData);
-      let supabaseData = await supabase.from("user_membership").select("*");
+      const userId = userData?.data?.user?.id;
+
+      if (!userId) {
+        console.error("User ID not found");
+        return;
+      }
+
+      // Query to fetch user memberships with membership details and user's birth date
+      const { data: supabaseData, error: supabaseError } = await supabase
+        .from("user_membership")
+        .select(
+          `
+        id,
+        user_id,
+        membership_id,
+        membership (id, title, cinema_id, discount_type),
+        user_data (auth_uuid, birth_date)
+    `
+        )
+        .eq("user_id", userId);
       if (info.city === "tallinn") {
         const [dataApollo, dataArtis, dataViimsi] =
           await Promise.all(getTallinnSchedule());
         dataApollo.Shows.forEach((element) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-            Price: apolloPriceCalculation(element),
-          });
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: apolloPriceCalculation(element, supabaseData),
+            });
+          }
         });
         dataArtis.Shows.forEach((element) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-            Price: artisPriceCalculation(element),
-          });
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: artisPriceCalculation(element, supabaseData),
+            });
+          }
         });
         dataViimsi.Schedule.Shows.Show.forEach((element) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-
-            Price: viimsiPriceCalculation(element),
-          });
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: viimsiPriceCalculation(element, supabaseData),
+            });
+          }
         });
       }
 
@@ -144,44 +176,50 @@ export default function OthersMovie(info: any) {
 
       if (cityScheduleFetchers[info.city]) {
         const citySchedule = await cityScheduleFetchers[info.city]();
-        citySchedule.Shows.forEach((element: any) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-            Price: apolloPriceCalculation(element),
-          });
+        citySchedule.Shows.forEach((element) => {
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: apolloPriceCalculation(element, supabaseData),
+            });
+          }
         });
       }
 
       if (info.city === "saaremaa") {
         const [dataThule, dataApollo] = await Promise.all(
-          getSaaremaaSchedule(),
+          getSaaremaaSchedule()
         );
         dataApollo.Shows.forEach((element) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-            Price: apolloPriceCalculation(element),
-          });
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: apolloPriceCalculation(element, supabaseData),
+            });
+          }
         });
         dataThule.Schedule.Shows.Show.forEach((element) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-            Price: thulePriceCalculation(element),
-          });
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: thulePriceCalculation(element, supabaseData),
+            });
+          }
         });
       }
 
@@ -189,59 +227,70 @@ export default function OthersMovie(info: any) {
         const [apolloData, artisData, viimsiData, thuleData] =
           await Promise.all(getEstoniaSchedule());
         apolloData.Shows.forEach((element) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-            Price: apolloPriceCalculation(element),
-          });
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: apolloPriceCalculation(element, supabaseData),
+            });
+          }
         });
         artisData.Shows.forEach((element) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-            Price: artisPriceCalculation(element),
-          });
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: artisPriceCalculation(element, supabaseData),
+            });
+          }
         });
         viimsiData.Schedule.Shows.Show.forEach((element) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-            Price: viimsiPriceCalculation(element),
-          });
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: viimsiPriceCalculation(element, supabaseData),
+            });
+          }
         });
         thuleData.Schedule.Shows.Show.forEach((element) => {
-          fetchedData.push({
-            dttmShowStart: element.dttmShowStart,
-            Title: element.Title,
-            OriginalTitle: element.OriginalTitle,
-            ShowURL: element.ShowURL,
-            Theatre: element.Theatre,
-            TheatreAuditorium: element.TheatreAuditorium,
-            Price: thulePriceCalculation(element),
-          });
+          if (removeSpecialCharacters(element.OriginalTitle) === decodedMovie) {
+            fetchedData.push({
+              dttmShowStart: element.dttmShowStart,
+              Title: element.Title,
+              OriginalTitle: element.OriginalTitle,
+              ShowURL: element.ShowURL,
+              Theatre: element.Theatre,
+              TheatreAuditorium: element.TheatreAuditorium,
+              Price: thulePriceCalculation(element, supabaseData),
+            });
+          }
         });
       }
 
       const filteredShows = fetchedData.filter(
-        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie,
+        (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie
+
       );
 
       setData(filteredShows);
     } catch (err) {
       console.error("Error fetching schedule data:", err);
-      setError("Failed to load schedule data. Please try again later.");
+
+      setError("Kava ei suudetud tehnilise errori tõttu laadida.");
+
     } finally {
       setIsLoading(false);
       setHasFetched(true);
