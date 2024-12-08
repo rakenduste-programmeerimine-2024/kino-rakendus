@@ -17,7 +17,7 @@ export default async function Index({ params }: { params: { city: string } }) {
     return (
       <>
         <main className="flex-1 flex flex-col gap-6 px-4">
-          <h1 className="bold text-pink-500">Tallinn</h1>
+        <h1 className="bold text-6xl">Tallinn</h1>
           <Tallinn />
         </main>
       </>
@@ -27,7 +27,7 @@ export default async function Index({ params }: { params: { city: string } }) {
     return (
       <>
         <main className="flex-1 flex flex-col gap-6 px-4">
-          <h1 className="bold text-pink-500">Tartu</h1>
+          <h1 className="bold text-6xl">Tartu</h1>
           <Tartu />
         </main>
       </>
@@ -37,7 +37,7 @@ export default async function Index({ params }: { params: { city: string } }) {
     return (
       <>
         <main className="flex-1 flex flex-col gap-6 px-4">
-          <h1 className="bold text-pink-500">Pärnu</h1>
+        <h1 className="bold text-6xl">Pärnu</h1>
           <Parnu />
         </main>
       </>
@@ -47,7 +47,7 @@ export default async function Index({ params }: { params: { city: string } }) {
     return (
       <>
         <main className="flex-1 flex flex-col gap-6 px-4">
-          <h1 className="bold text-pink-500">Saaremaa</h1>
+        <h1 className="bold text-6xl">Saaremaa</h1>
           <Saaremaa />
         </main>
       </>
@@ -57,7 +57,7 @@ export default async function Index({ params }: { params: { city: string } }) {
     return (
       <>
         <main className="flex-1 flex flex-col gap-6 px-4">
-          <h1 className="bold text-pink-500">Narva</h1>
+        <h1 className="bold text-6xl">Narva</h1>
           <Narva />
         </main>
       </>
@@ -67,7 +67,7 @@ export default async function Index({ params }: { params: { city: string } }) {
     return (
       <>
         <main className="flex-1 flex flex-col gap-6 px-4">
-          <h1 className="bold text-pink-500">Viljandi</h1>
+        <h1 className="bold text-6xl">Viljandi</h1>
           <Viljandi />
         </main>
       </>
@@ -77,7 +77,7 @@ export default async function Index({ params }: { params: { city: string } }) {
     return (
       <>
         <main className="flex-1 flex flex-col gap-6 px-4">
-          <h1 className="bold text-pink-500">Jõhvi</h1>
+        <h1 className="bold text-6xl">Jõhvi</h1>
           <Johvi />
         </main>
       </>
