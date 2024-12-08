@@ -12,6 +12,7 @@ const SearchComponent: React.FC = () => {
     e.preventDefault();
     if (query.replace(/[\s:]+/g, "").toLowerCase()) {
       router.push(`/search/${query.replace(/[\s:]+/g, "").toLowerCase()}`);
+
     }
   };
 
@@ -28,6 +29,7 @@ const SearchComponent: React.FC = () => {
       <Button type="submit" className="ml-2 p-2">
         Search
       </Button>
+
     </form>
   );
 };

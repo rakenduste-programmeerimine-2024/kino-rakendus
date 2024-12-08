@@ -67,6 +67,7 @@ export interface Images {
 
 export enum PresentationMethod {
   The2D = "2D",
+  The3D = "3D"
 }
 
 export interface SpokenLanguage {

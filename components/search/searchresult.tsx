@@ -42,6 +42,7 @@ export default async function SearchResult(info: any) {
     const artisEventData = await getArtisEvents();
     artisEventData.forEach((event) => {
       if (
+
         event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "")
           .toLowerCase()
           .includes(decodedMovie) ||

@@ -9,7 +9,6 @@ export default async function Thule() {
         <h1>Schedule</h1>
         {data.Events.Event.map((event, index) => (
           <div key={index}>
-            {/*<h2>{event.Title}</h2>*/}
             <Link
               href={`/eesti/${event.OriginalTitle.replace(/[\s:%.!@#$^&*()_=+\[\]{}|\\\-?.<>]+/g, "").toLowerCase()}`}
             >
