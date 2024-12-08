@@ -25,7 +25,6 @@ import { Button } from "../ui/button";
 import { formatDateTime } from "@/utils/utils";
 import { format } from "path";
 
-
 interface Data {
   dttmShowStart: string; // Date;
   Title: string;
@@ -51,31 +50,25 @@ export default function OthersMovie(info: any) {
         let filteredEvents = eventData.filter(
           (event) =>
             removeSpecialCharacters(event.OriginalTitle) === decodedMovie
-
         );
         if (!filteredEvents[0]) {
           eventData = await getArtisEvents();
           filteredEvents = eventData.filter(
             (event) =>
-
               removeSpecialCharacters(event.OriginalTitle) === decodedMovie
-
           );
         }
         if (!filteredEvents[0]) {
           eventData = (await getViimsiEvents()).Events.Event;
           filteredEvents = eventData.filter(
             (event) =>
-
               removeSpecialCharacters(event.OriginalTitle) === decodedMovie
-
           );
         }
         if (!filteredEvents[0]) {
           eventData = (await getThuleEvents()).Events.Event;
           filteredEvents = eventData.filter(
             (event) =>
-
               removeSpecialCharacters(event.OriginalTitle) === decodedMovie
           );
         }
@@ -102,26 +95,33 @@ export default function OthersMovie(info: any) {
       //let holidayDates = await getHolidays();
       const userData = await supabase.auth.getUser();
       console.log(userData);
-      const userId = userData?.data?.user?.id;
+      let userId = userData?.data?.user?.id;
 
       if (!userId) {
-        console.error("User ID not found");
-        return;
+        userId = "89c7b37d-870e-41e0-a6a4-8e798e5c9895";
       }
 
       // Query to fetch user memberships with membership details and user's birth date
       const { data: supabaseData, error: supabaseError } = await supabase
-        .from("user_membership")
+        .from("user_data")
         .select(
           `
-        id,
-        user_id,
-        membership_id,
-        membership (id, title, cinema_id, discount_type),
-        user_data (auth_uuid, birth_date)
-    `
+            auth_uuid,
+            birth_date,
+            user_membership (
+              id,
+              membership_id,
+              membership (
+                id,
+                title,
+                cinema_id,
+                discount_type
+              )
+            )
+          `
         )
-        .eq("user_id", userId);
+        .eq("auth_uuid", userId);
+      console.log(supabaseData);
       if (info.city === "tallinn") {
         const [dataApollo, dataArtis, dataViimsi] =
           await Promise.all(getTallinnSchedule());
@@ -282,7 +282,6 @@ export default function OthersMovie(info: any) {
 
       const filteredShows = fetchedData.filter(
         (show) => removeSpecialCharacters(show.OriginalTitle) === decodedMovie
-
       );
 
       setData(filteredShows);
@@ -290,7 +289,6 @@ export default function OthersMovie(info: any) {
       console.error("Error fetching schedule data:", err);
 
       setError("Kava ei suudetud tehnilise errori tõttu laadida.");
-
     } finally {
       setIsLoading(false);
       setHasFetched(true);
@@ -359,7 +357,8 @@ export default function OthersMovie(info: any) {
           {data.map((show, index) => (
             <div
               key={index}
-              className="border border-gray-300 p-4 rounded-lg hover:bg-slate-400 hover:bg-opacity-5">
+              className="border border-gray-300 p-4 rounded-lg hover:bg-slate-400 hover:bg-opacity-5"
+            >
               <p className="mb-2 border-spacing-3 border-b">
                 <strong>Esituse algus:</strong>
                 {formatDateTime(show.dttmShowStart)}
@@ -375,7 +374,8 @@ export default function OthersMovie(info: any) {
               </p>
               <Link
                 href={show.ShowURL}
-                className="text-blue-500 hover:underline">
+                className="text-blue-500 hover:underline"
+              >
                 {show.ShowURL}
               </Link>
             </div>
